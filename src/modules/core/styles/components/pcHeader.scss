@@ -1,0 +1,20 @@
+@import "../color";
+.pc-header{
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 50px;
+  width: 100%;
+  & > .pc-nav{
+    & > li{
+      display: inline-block;
+      font-size: 18px;
+      & > a{
+        padding: 3px 15px;
+        &.selected{
+          color: $c-green;
+        }
+      }
+    }
+  }
+}

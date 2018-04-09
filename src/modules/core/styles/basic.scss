@@ -35,11 +35,14 @@ a{
   font-size: inherit;
 }
 // 引入到全局样式
-@import "theme/box";
-@import "theme/icon";
+//@import "theme/icon";
 @import "theme/flex";
-@import "theme/float";
-@import "theme/fontSize";
-@import "theme/lineHeight";
-@import "theme/text";
-@import "theme/label";
+@import "theme/form";
+@import "theme/btn";
+@import "theme/container";
+//@import "theme/float";
+//@import "theme/fontSize";
+//@import "theme/lineHeight";
+//@import "theme/text";
+//@import "theme/label";
+@import "theme/box";

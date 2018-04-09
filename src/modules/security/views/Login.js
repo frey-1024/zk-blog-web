@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+// import LoginModal from '../components/LoginModal'
+import '../styles/login.scss';
 
 export default class Login extends Component {
   constructor(props) {
@@ -7,7 +9,7 @@ export default class Login extends Component {
   render (){
     return (
       <div>
-        login
+        {/*<LoginModal/>*/}
       </div>
     );
   }

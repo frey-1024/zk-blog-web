@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {
-  BrowserRouter as Router,
   Route,
   Redirect
 } from 'react-router-dom';
@@ -8,6 +7,7 @@ import PropTypes from 'prop-types';
 import { configure } from 'mobx';
 import {inject, observer} from 'mobx-react';
 import LazyRoute from '../components/LazyRoute';
+import PcHeader from '../components/PcHeader';
 
 import 'font-awesome/css/font-awesome.css';
 import '../styles/basic.scss';
@@ -28,20 +28,19 @@ export default class AppPage extends Component {
   render() {
     console.log(this.props.currentUser);
     return (
-      <Router>
-        <div>
-          <Route exact path="/" render={({match}) => {
-            return match.path === '/' ? (
-              <Redirect to="/login"/>
-            ) : (
-              <Home/>
-            )
-          }}/>
-          <div className="container">
-            <LazyRoute name="login"/>
-          </div>
+      <div>
+        <PcHeader/>
+        <Route exact path="/" render={({match}) => {
+          return match.path === '/' ? (
+            <Redirect to="/login"/>
+          ) : (
+            <Home/>
+          )
+        }}/>
+        <div className="container">
+          <LazyRoute name="login"/>
         </div>
-      </Router>
+      </div>
     );
   };
 }
