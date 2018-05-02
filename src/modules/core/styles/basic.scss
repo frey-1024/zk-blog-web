@@ -13,6 +13,7 @@ body{
   font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  position: relative;
 }
 
 
@@ -21,3 +22,4 @@ body{
 @import "./theme/fontSize";
 @import "./theme/text";
 @import "./theme/btn";
+@import "./theme/media";

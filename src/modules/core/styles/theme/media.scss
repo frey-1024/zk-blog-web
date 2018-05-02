@@ -1,0 +1,21 @@
+.pc-show{
+ display: block;
+}
+.app-show{
+  display: none;
+}
+.container{
+  width: 1200px;
+  margin: 0 auto;
+}
+@media only screen and (max-width: 760px){
+  .pc-show{
+    display: none;
+  }
+  .app-show{
+    display: block;
+  }
+  .container{
+    width: 100%;
+  }
+}
