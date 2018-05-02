@@ -10,7 +10,7 @@ body,div,span,header,footer,nav,section,aside,article,ul, li, a, p, h1, h2, h3, 
 }
 
 body{
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -20,3 +20,4 @@ body{
 @import "./theme/flex";
 @import "./theme/fontSize";
 @import "./theme/text";
+@import "./theme/btn";

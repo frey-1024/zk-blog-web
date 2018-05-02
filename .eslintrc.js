@@ -30,6 +30,10 @@ module.exports = {
     'no-console': 0,// 禁止使用console
     // allow async-await
     'generator-star-spacing': 'off',
+    // 代码注释需要空格
+    'spaced-comment': 2,
+    // 忽略注释缩进
+    'indent': ["error", 2, { "ignoreComments": true }],
     'no-unused-expressions': 'off',
     // allow debugger during development
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off'
