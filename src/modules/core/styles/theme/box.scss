@@ -32,3 +32,18 @@ $values: (2) (4) (8) (10) (15) (20) (25) (30) (40) (50);
 .pos-re{
   position: relative;
 }
+
+.pull-{
+  &left{
+    float: left;
+  }
+  &right{
+    float: right;
+  }
+}
+
+.clearfix:after {
+  content:"";
+  display: block;
+  clear:both;
+}

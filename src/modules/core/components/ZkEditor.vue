@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :class="{'expand': isExpand}">
     <div class="zk-editor-utils flex-row">
       <ul class="zk-editor-menu flex-row row-left">
         <li v-for="item in utils" class="flex-row">
@@ -19,15 +19,20 @@
       </ul>
       <ul class="zk-editor-menu flex-row row-right">
         <li v-for="item in editorMode" class="flex-row">
-          <a class="flex-row row-center" :class="{ 'active': !item.unselect && item.active }" @click.stop="selectUtil(item)" href="javascript:;">
+          <a class="flex-row row-center" :class="{ 'active': !item.unselect && item.active }" @click.stop="selectModeUtil(item)" href="javascript:;">
             <icon :name="item.icon"></icon>
           </a>
           <span class="zk-editor-utils-separator" v-if="item.separator">|</span>
         </li>
       </ul>
     </div>
-    <div class="zk-editor-content" contenteditable ref="contenteditable" @mousedown.stop="editorMouseDown" @mouseup.stop="editorMouseUp" @keyup.stop="createEmptyContent">
-      <div>&#8203;<br></div>
+    <div class="zk-editor-body clearfix" :class="{'show-preview': showPreview}">
+      <div class="zk-editor-content pull-left" contenteditable ref="contenteditable" @mousedown.stop="editorMouseDown" @mouseup.stop="editorMouseUp" @keyup.stop="editorKeyUp">
+        <div>&#8203;<br></div>
+      </div>
+      <transition name="opacity">
+        <div class="zk-editor-preview pull-left" v-if="showPreview" v-html="previewHtml"></div>
+      </transition>
     </div>
   </div>
 </template>
@@ -45,6 +50,10 @@
         utils: [],
         editorMode: [...editorMode],
         dropdownUtil: null,
+        showPreview: false,
+        isExpand: false,
+        timer: null,
+        previewHtml: ''
       };
     },
     created() {
@@ -70,6 +79,18 @@
           }
           return child;
         });
+        this.refreshPreviewHtml(el.innerHTML);
+      },
+      selectModeUtil(item) {
+        // 当是活跃的工具（可选中）的元素时，才设置状态
+        if (!item.unselect) {
+          item.active = !item.active;
+        }
+        if (item.name === 'preview') {
+          this.showPreview = item.active;
+        } else if (item.name === 'expand') {
+          this.isExpand = item.active;
+        }
       },
       /**
        * 选择工具栏选项，并让选择的高亮/回复正常
@@ -88,15 +109,30 @@
         if (!item.dropMenus) {
           document.execCommand(item.name, false, null);
         }
+        const el = this.$refs.contenteditable;
+        this.refreshPreviewHtml(el.innerHTML);
       },
-      /**
-       * 当editor 内容删除完后，应该添加如下内容
-       * @param ev
-       */
-      createEmptyContent(ev) {
+      editorKeyUp(ev) {
+        // 当editor 内容删除完后，应该添加如下内容
         if (!ev.target.innerHTML) {
           ev.target.innerHTML = '<div>&#8203;<br></div>';
         }
+        this.refreshPreviewHtml(ev.target.innerHTML);
+      },
+      /**
+       * 更新preview 界面
+       * @param html
+       */
+      refreshPreviewHtml(html) {
+        if (!this.showPreview || this.previewHtml === html) {
+          return;
+        }
+        if (this.timer) {
+          clearTimeout(this.timer);
+        }
+        this.timer = setTimeout(() => {
+          this.previewHtml = html;
+        }, 300);
       },
       editorMouseDown() {
         // 将所有的区域都从选区中移除。
@@ -158,15 +194,56 @@
         margin-left: 8px;
       }
     }
-    &content{
-      word-wrap:break-word;
-      word-break:break-all;
-      overflow: auto;
-      resize: vertical;
-      height: 300px;
-      border: 1px solid $c-border;
+    &body{
+      position: relative;
       width: 100%;
-      padding: 10px;
+      height: 300px;
+      resize: vertical;
+      overflow: auto;
+      border: 1px solid $c-border;
+      background-color: $c-white;
+      .zk-editor-content{
+        background-color: $c-white;
+        word-wrap:break-word;
+        word-break:break-all;
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 100%;
+        padding: 10px;
+        transition: width .5s;
+        z-index: 2;
+      }
+      .zk-editor-preview{
+        background-color: $c-white;
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 50%;
+        height: 100%;
+        z-index: 1;
+      }
+      &.show-preview{
+        .zk-editor-content{
+          width: 50%;
+          border-right: 1px solid $c-border;
+        }
+      }
     }
+  }
+  .expand{
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+  }
+  // 动画过渡
+  .opacity-enter-active, .opacity-leave-active {
+    transition: all .5s;
+  }
+  .opacity-enter, .opacity-leave-to {
+    opacity: 0;
   }
 </style>
