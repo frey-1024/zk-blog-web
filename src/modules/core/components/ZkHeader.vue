@@ -25,7 +25,7 @@
           <img class="logo" src="../../../assets/logo.png"/>
         </li>
         <li class="flex-1 flex-row row-right text-gray">
-          <icon name="user"></icon>
+          <icon name="cog"></icon>
         </li>
       </ul>
       <ul class="nav-list flex-row row-left">
@@ -60,6 +60,10 @@
           text: '学习',
           appIcon: 'battery-three-quarters',
           pathName: 'charge',
+        }, {
+          text: '关于',
+          appIcon: 'user',
+          pathName: 'user',
         }],
       };
     },

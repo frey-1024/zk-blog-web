@@ -24,3 +24,10 @@ export function getStyleNumber(el, attr, pseudoClass = null) {
     console.error(e);
   }
 }
+
+export function getWindowSize() {
+  return {
+    width: window.innerWidth,
+    height: window.innerHeight
+  };
+}
