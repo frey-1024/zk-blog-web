@@ -44,12 +44,21 @@
       return {
         utils: [],
         editorMode: [...editorMode],
+        dropdownUtil: null,
       };
     },
     created() {
       this.copyMenuData();
     },
+    mounted() {
+      window.addEventListener('click', this.hideDropdownMenu, false);
+    },
     methods: {
+      hideDropdownMenu() {
+        if (this.dropdownUtil) {
+          this.dropdownUtil.show = false;
+        }
+      },
       getSelectAtDropdown(util, selectedItem) {
         util.show = false;
         const el = this.$refs.contenteditable;
@@ -69,6 +78,7 @@
       selectUtil(item) {
         if (item.dropMenus && item.dropMenus.length) {
           item.show = !item.show;
+          this.dropdownUtil = item;
           return;
         }
         // 当是活跃的工具（可选中）的元素时，才设置状态
@@ -106,9 +116,11 @@
         });
       },
     },
-    mounted() {},
     components: {
       ZkDropdown: () => import('./ZkDropdown.vue'),
+    },
+    destroyed() {
+      window.removeEventListener('click', this.hideDropdownMenu, false);
     }
   };
 </script>
