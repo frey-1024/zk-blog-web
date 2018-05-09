@@ -220,6 +220,7 @@
         position: absolute;
         right: 0;
         top: 0;
+        padding: 10px;
         width: 50%;
         height: 100%;
         z-index: 1;
