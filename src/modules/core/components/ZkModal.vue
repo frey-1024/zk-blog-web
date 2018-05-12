@@ -4,9 +4,9 @@
     <transition name="shrink" @after-leave="afterLeave" @before-enter="beforeEnter">
       <div class="zk-modal-wrapper" v-show="visible">
         <div class="zk-modal" :class="size">
-          <div class="zk-modal-title flex-row">
+          <div class="zk-modal-title flex-row fs-18">
             <slot name="title"></slot>
-            <icon name="times-circle" class="text-gray"></icon>
+            <span @click.stop="close" class="flex-row row-center"><icon name="times" class="text-gray hover-blue pointer"></icon></span>
           </div>
           <div class="zk-modal-body">
             <slot name="body"></slot>
@@ -38,6 +38,9 @@
       };
     },
     methods: {
+      close() {
+        this.$emit('update:visible', false);
+      },
       beforeEnter() {
         this.showCover = true;
       },
@@ -70,12 +73,14 @@
     margin: 0 auto;
     margin-top: 15vh;
     &-title{
-      padding: 10px 15px;
+      padding: 15px;
+      border-bottom: 1px solid $c-border;
     }
     &-body{
       padding: 10px 15px;
     }
     &-footer{
+      border-top: 1px solid $c-border;
       padding: 10px 15px;
     }
 

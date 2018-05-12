@@ -30,7 +30,16 @@
 .text-center{
   text-align: center;
 }
-
 .text-underline{
   text-decoration: underline;
+}
+
+.hover-blue:hover{
+  color: $c-blue;
+}
+.hover-red:hover{
+  color: $c-red;
+}
+.pointer{
+  cursor: pointer;
 }

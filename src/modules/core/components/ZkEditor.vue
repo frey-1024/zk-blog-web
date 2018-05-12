@@ -34,15 +34,17 @@
         <div class="zk-editor-preview pull-left" v-if="showPreview" v-html="previewHtml"></div>
       </transition>
     </div>
-    <zk-modal size="sm" :visible.sync="openCodeModal">
-      <span slot="title">插入代码</span>
-      <slot slot="body">
-        <textarea placeholder="请添加代码" ref="insertCode" class="form-control code-input"></textarea>
-      </slot>
-      <slot slot="footer">
-        <zk-button class="btn btn-blue" @click="getInsertCode">插入</zk-button>
-      </slot>
-    </zk-modal>
+    <!--插入代码弹框-->
+    <insert-code :visible.sync="openCodeModal" @code="getInsertCode"></insert-code>
+    <!--<zk-modal size="sm" :visible.sync="openCodeModal">-->
+      <!--<span slot="title">插入代码</span>-->
+      <!--<slot slot="body">-->
+        <!--<textarea placeholder="请添加代码" ref="insertCode" class="form-control code-input"></textarea>-->
+      <!--</slot>-->
+      <!--<slot slot="footer">-->
+        <!--<zk-button class="btn btn-blue" @click="getInsertCode">插入</zk-button>-->
+      <!--</slot>-->
+    <!--</zk-modal>-->
   </div>
 </template>
 
@@ -73,12 +75,8 @@
       window.addEventListener('click', this.hideDropdownMenu, false);
     },
     methods: {
-      getInsertCode() {
-        const el = this.$refs.insertCode;
-        const val = el.value;
-        if (val === '' || val.trim() === '') {
-          return;
-        }
+      getInsertCode(val) {
+        console.log(val);
         this.openCodeModal = false;
       },
       hideDropdownMenu() {
@@ -116,8 +114,6 @@
        */
       selectUtil(item) {
         if (item.modal) {
-          const el = this.$refs.insertCode;
-          el.value = '';
           this.openCodeModal = true;
           return;
         }
@@ -178,6 +174,7 @@
     },
     components: {
       ZkDropdown: () => import('./ZkDropdown.vue'),
+      InsertCode: () => import('./editor/InsertCode.vue'),
       ZkModal: () => import('./ZkModal.vue'),
     },
     destroyed() {
