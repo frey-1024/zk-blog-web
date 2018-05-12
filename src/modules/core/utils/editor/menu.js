@@ -29,8 +29,9 @@ export const editorMenu = [
   { name: 'italic', icon: 'italic', active: false, el: ['I', 'EM'] },
   { name: 'underline', icon: 'underline', active: false, el: ['U'] },
   { name: 'strikethrough', icon: 'strikethrough', active: false, el: ['S', 'STRIKE'] },
-  { name: 'lineheight', styleKey: 'lineHeight', icon: 'text-height', active: false, dropMenus: lineHeightMenus, dropStyle: { left: 0, width: '120px', 'max-height': '130px', top: '25px', fontSize: '12px' } },
-  { name: 'removeformat', icon: 'eraser', unselect: true, active: false, separator: true },
+  { name: 'code', icon: 'code', active: false, unselect: true, modal: true },
+  { name: 'lineheight', styleKey: 'lineHeight', icon: 'text-height', active: false, dropMenus: lineHeightMenus, dropStyle: { left: 0, width: '120px', 'max-height': '130px', top: '25px', fontSize: '12px' }, separator: true },
+  { name: 'removeformat', icon: 'eraser', unselect: true, active: false },
   { name: 'undo', icon: 'undo', unselect: true, },
   { name: 'redo', icon: 'redo', unselect: true, },
 ];

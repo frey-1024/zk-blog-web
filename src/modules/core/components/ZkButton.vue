@@ -44,6 +44,8 @@
         this.context = el.getContext('2d');
       },
       ripple(event) {
+        // 把点击事件提交到父级
+        this.$emit('click');
         // 清除上次没有执行的动画
         if (this.timer) {
           window.cancelAnimationFrame(this.timer);

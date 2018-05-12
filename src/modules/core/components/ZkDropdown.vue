@@ -46,6 +46,7 @@
   @import "../styles/color";
   .zk-dropdown-list{
     position: absolute;
+    z-index: 3;
     overflow: auto;
     border: 1px solid $c-border;
     background-color: $c-white;
