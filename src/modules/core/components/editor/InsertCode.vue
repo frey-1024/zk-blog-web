@@ -2,6 +2,15 @@
   <zk-modal size="sm" :visible.sync="openModal">
     <span slot="title">插入代码</span>
     <slot slot="body">
+      <div class="flex-row row-left mb-10">
+        <span class="pr-10">请选择语言：</span>
+        <zk-select
+          placeholder="请选择语言"
+          width="240px"
+          v-model="value"
+          :options="options">
+        </zk-select>
+      </div>
       <textarea placeholder="请添加代码" ref="insertCode" class="form-control code-input"></textarea>
     </slot>
     <slot slot="footer">
@@ -11,6 +20,7 @@
 </template>
 
 <script>
+  import { languages } from '../../utils/editor/menu';
   export default {
     props: {
       visible: {
@@ -20,21 +30,32 @@
     },
     data() {
       return {
-        openModal: this.visible
+        openModal: this.visible,
+        options: languages,
+        value: languages[0],
       };
     },
     methods: {
       save() {
         const el = this.$refs.insertCode;
-        const val = el.value;
+        let val = el.value;
         if (val === '' || val.trim() === '') {
           return;
         }
-        this.$emit('code', val);
+        const lang = this.value.value;
+        // 处理标签
+        if (lang === 'html' || lang === 'xml') {
+          val = val.replace(/[<>]/g, (v) => {
+            if (v === '<') return '&lt;';
+            if (v === '>') return '&gt;';
+          });
+        }
+        this.$emit('code', { code: val, lang });
       }
     },
     components: {
       ZkModal: () => import('../ZkModal.vue'),
+      ZkSelect: () => import('../ZkSelect.vue'),
     },
     watch: {
       openModal(newVal) {

@@ -2,35 +2,25 @@
  * 返回一个  Selection 对象，表示用户选择的文本范围或光标的当前位置。
  * @returns {Selection}
  */
-function getSelection() {
+export function getSelection() {
   return window.getSelection();
+}
+
+export function getCurrentRange() {
+  const selection = getSelection();
+  return selection.getRangeAt(0);
 }
 
 export function removeAllRanges() {
   const selection = getSelection();
   selection.removeAllRanges();
+  return selection;
 }
 
-function findSameTagNameByRange(utils, tagName) {
-  let util;
-  for (let i = 0, l = utils.length; i < l; i += 1) {
-    util = utils[i];
-    if (!util.inactive && util.el && util.el.indexOf(tagName) !== -1) {
-      util.active = true;
-      return;
-    }
-  }
-}
-
-export function getStatusByRange(utils) {
-  const selection = getSelection();
-  console.log(selection);
-  const range = selection.getRangeAt(0);
-  let parentElement = range.startContainer.parentNode;
-  let tagName;
-  while ((parentElement.tagName && (tagName = parentElement.tagName.toUpperCase())) && parentElement.className.indexOf() !== 'DIV') {
-    findSameTagNameByRange(utils, tagName);
-    parentElement = parentElement.parentNode;
-  }
-  console.log(utils);
+/**
+ * 恢复选取
+ */
+export function restoreSelection(prevRange) {
+  const selection = removeAllRanges();
+  selection.addRange(prevRange);
 }

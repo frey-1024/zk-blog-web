@@ -7,13 +7,14 @@ body,div,span,header,footer,nav,section,aside,article,ul, li, a, p, h1, h2, h3, 
   &:focus {
     outline: none;
   }
+  font-family: "Source Code Pro",Consolas,Menlo,Monaco,"Courier New",monospace;
 }
 
 body{
-  font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   position: relative;
+  font-size: 12px;
 }
 img{
   display: block;

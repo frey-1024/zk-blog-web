@@ -43,3 +43,9 @@ export const editorMode = [
   { name: 'preview', icon: 'eye', active: false, },
   { name: 'expand', icon: 'expand', active: false, },
 ];
+
+export const languages = [
+  { value: 'javascript', label: 'Javascript' },
+  { value: 'html', label: 'HTML' },
+  { value: 'css', label: 'CSS' },
+];

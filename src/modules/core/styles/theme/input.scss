@@ -1,7 +1,7 @@
 @import "../color";
 .form-control{
   outline: none;
-  padding: 8px 20px;
+  padding: 8px 10px;
   width: 100%;
   border: 1px solid $c-border;
   border-radius: 4px;
@@ -9,6 +9,11 @@
   &:focus{
     box-shadow: 0 0 4px rgba($c-blue, 0.8);
     border-color: rgba($c-blue, 0.8);
+  }
+  input{
+    border: none;
+    height: 100%;
+    width: 100%;
   }
 }
 

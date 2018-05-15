@@ -28,7 +28,7 @@
     </div>
     <div class="zk-editor-body clearfix" :class="{'show-preview': showPreview}">
       <div class="zk-editor-content pull-left" contenteditable ref="contenteditable" @mousedown.stop="editorMouseDown" @mouseup.stop="editorMouseUp" @keyup.stop="editorKeyUp">
-        <div>&#8203;<br></div>
+        <p><br></p>
       </div>
       <transition name="opacity">
         <div class="zk-editor-preview pull-left" v-if="showPreview" v-html="previewHtml"></div>
@@ -36,23 +36,16 @@
     </div>
     <!--插入代码弹框-->
     <insert-code :visible.sync="openCodeModal" @code="getInsertCode"></insert-code>
-    <!--<zk-modal size="sm" :visible.sync="openCodeModal">-->
-      <!--<span slot="title">插入代码</span>-->
-      <!--<slot slot="body">-->
-        <!--<textarea placeholder="请添加代码" ref="insertCode" class="form-control code-input"></textarea>-->
-      <!--</slot>-->
-      <!--<slot slot="footer">-->
-        <!--<zk-button class="btn btn-blue" @click="getInsertCode">插入</zk-button>-->
-      <!--</slot>-->
-    <!--</zk-modal>-->
   </div>
 </template>
 
 <script>
+  import hljs from 'highlight.js';
   import { editorMenu, editorMode } from '../utils/editor/menu';
-  import { removeAllRanges } from '../utils/editor/selection';
+  import { getSelection, getCurrentRange, removeAllRanges, restoreSelection } from '../utils/editor/selection';
   import { setUtilsStatusByRange } from '../utils/editor/utilStatus';
   import { setContentByRange } from '../utils/editor/content';
+  import 'highlight.js/styles/github.css';
 
   export default {
     name: 'editor',
@@ -66,6 +59,7 @@
         timer: null,
         previewHtml: '',
         openCodeModal: false,
+        _currentRange: null,
       };
     },
     created() {
@@ -75,9 +69,17 @@
       window.addEventListener('click', this.hideDropdownMenu, false);
     },
     methods: {
-      getInsertCode(val) {
-        console.log(val);
+      getInsertCode(data) {
+        restoreSelection(this._currentRange);
         this.openCodeModal = false;
+        const timestamp = Date.now();
+        document.execCommand('insertHTML', false, `<pre><code class="${data.lang}" data-${timestamp}>${data.code}</code></pre><p><br></p>`);
+        setTimeout(function() {
+          let blocks = document.querySelectorAll(`code[data-${timestamp}]`);
+          blocks.forEach((block) => {
+            hljs.highlightBlock(block);
+          });
+        });
       },
       hideDropdownMenu() {
         if (this.dropdownUtil) {
@@ -87,7 +89,7 @@
       getSelectAtDropdown(util, selectedItem) {
         util.show = false;
         const el = this.$refs.contenteditable;
-        const selection = document.getSelection();
+        const selection = getSelection();
         Array.from(el.childNodes, (child) => {
           // 判断选择的节点是否在选择区域内，如果在，就设置该节点的样式
           if (selection.containsNode(child, true)) {
@@ -113,6 +115,7 @@
        * @param item
        */
       selectUtil(item) {
+        this._currentRange = getCurrentRange();
         if (item.modal) {
           this.openCodeModal = true;
           return;
@@ -135,7 +138,7 @@
       editorKeyUp(ev) {
         // 当editor 内容删除完后，应该添加如下内容
         if (!ev.target.innerHTML) {
-          ev.target.innerHTML = '<div>&#8203;<br></div>';
+          ev.target.innerHTML = '<p><br></p>';
         }
         this.refreshPreviewHtml(ev.target.innerHTML);
       },
@@ -174,8 +177,7 @@
     },
     components: {
       ZkDropdown: () => import('./ZkDropdown.vue'),
-      InsertCode: () => import('./editor/InsertCode.vue'),
-      ZkModal: () => import('./ZkModal.vue'),
+      InsertCode: () => import('./editor/InsertCode.vue')
     },
     destroyed() {
       window.removeEventListener('click', this.hideDropdownMenu, false);
