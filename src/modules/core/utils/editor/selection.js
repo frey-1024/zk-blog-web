@@ -6,8 +6,11 @@ export function getSelection() {
   return window.getSelection();
 }
 
-export function getCurrentRange() {
+export function getCurrentRange(prevRange) {
   const selection = getSelection();
+  if (selection.rangeCount < 1 && prevRange) {
+    return prevRange;
+  }
   return selection.getRangeAt(0);
 }
 
@@ -23,4 +26,10 @@ export function removeAllRanges() {
 export function restoreSelection(prevRange) {
   const selection = removeAllRanges();
   selection.addRange(prevRange);
+}
+
+// 选区是否为空
+export function isSelectionEmpty(prevRange) {
+  const range = getCurrentRange(prevRange);
+  return range && range.startContainer && range.startContainer === range.endContainer && range.startOffset === range.endOffset;
 }

@@ -1,6 +1,6 @@
 <template>
   <div :class="{'expand': isExpand}">
-    <div class="zk-editor-utils flex-row">
+    <div class="zk-editor-utils flex-row fs-14">
       <ul class="zk-editor-menu flex-row row-left">
         <li v-for="item in utils" class="flex-row">
           <a class="flex-row row-center" :class="{ 'active': !item.unselect && item.active }" @click.stop="selectUtil(item)" href="javascript:;">
@@ -42,7 +42,7 @@
 <script>
   import hljs from 'highlight.js';
   import { editorMenu, editorMode } from '../utils/editor/menu';
-  import { getSelection, getCurrentRange, removeAllRanges, restoreSelection } from '../utils/editor/selection';
+  import { getSelection, getCurrentRange, removeAllRanges, restoreSelection, isSelectionEmpty } from '../utils/editor/selection';
   import { setUtilsStatusByRange } from '../utils/editor/utilStatus';
   import { setContentByRange } from '../utils/editor/content';
   import 'highlight.js/styles/github.css';
@@ -66,20 +66,23 @@
       this.copyMenuData();
     },
     mounted() {
+      // 设置焦点
+      this.$refs.contenteditable.focus();
       window.addEventListener('click', this.hideDropdownMenu, false);
     },
     methods: {
+      highlightBlock(timestamp) {
+        let blocks = document.querySelectorAll(`code[data-${timestamp}]`);
+        blocks.forEach((block) => {
+          hljs.highlightBlock(block);
+        });
+      },
       getInsertCode(data) {
         restoreSelection(this._currentRange);
         this.openCodeModal = false;
         const timestamp = Date.now();
         document.execCommand('insertHTML', false, `<pre><code class="${data.lang}" data-${timestamp}>${data.code}</code></pre><p><br></p>`);
-        setTimeout(function() {
-          let blocks = document.querySelectorAll(`code[data-${timestamp}]`);
-          blocks.forEach((block) => {
-            hljs.highlightBlock(block);
-          });
-        });
+        window.requestAnimationFrame(this.highlightBlock.bind(this, timestamp));
       },
       hideDropdownMenu() {
         if (this.dropdownUtil) {
@@ -106,6 +109,8 @@
         }
         if (item.name === 'preview') {
           this.showPreview = item.active;
+          const el = this.$refs.contenteditable;
+          this.refreshPreviewHtml(el.innerHTML);
         } else if (item.name === 'expand') {
           this.isExpand = item.active;
         }
@@ -115,8 +120,9 @@
        * @param item
        */
       selectUtil(item) {
-        this._currentRange = getCurrentRange();
-        if (item.modal) {
+        this._currentRange = getCurrentRange(this._currentRange);
+        // 判断如果有选择项就阻止
+        if (item.modal && isSelectionEmpty(this._currentRange)) {
           this.openCodeModal = true;
           return;
         }
