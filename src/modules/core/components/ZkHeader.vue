@@ -12,7 +12,7 @@
         </ul>
         <ul class="flex-row row-right nav-user">
           <li><zk-button class="btn btn-default">注册</zk-button></li>
-          <li><zk-button class="btn btn-blue">登录</zk-button></li>
+          <li><zk-button class="btn btn-blue" @click="goLogin">登录</zk-button></li>
         </ul>
       </div>
     </div>
@@ -75,8 +75,11 @@
     },
     methods: {
       goView(item) {
-        this.$router.push(item.pathName);
-      }
+        this.$router.push({ name: item.pathName });
+      },
+      goLogin() {
+        this.$router.push({ name: 'login' });
+      },
     }
   };
 </script>

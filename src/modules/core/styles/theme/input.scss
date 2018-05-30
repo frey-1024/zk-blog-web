@@ -1,19 +1,46 @@
 @import "../color";
-.form-control{
-  outline: none;
-  padding: 8px 10px;
-  width: 100%;
-  border: 1px solid $c-border;
-  border-radius: 4px;
-  transition: border-color,box-shadow .3s;
-  &:focus{
-    box-shadow: 0 0 4px rgba($c-blue, 0.8);
-    border-color: rgba($c-blue, 0.8);
+.form{
+  width: 400px;
+  margin: auto;
+}
+.form-group{
+  margin-bottom: 10px;
+  .form-title{
+    font-size: 14px;
+    font-weight: 500;
+    padding-bottom: 4px;
+    display: block;
   }
-  input{
-    border: none;
-    height: 100%;
+  .form-control{
+    -webkit-appearance: none;
+    outline: none;
+    padding: 8px 10px;
     width: 100%;
+    border: 1px solid $c-border;
+    border-radius: 4px;
+    transition: border-color,box-shadow .3s;
+    &:focus{
+      box-shadow: 0 0 4px rgba($c-blue, 0.8);
+      border-color: rgba($c-blue, 0.8);
+    }
+  }
+  .tip{
+    display: none;
+    font-size: 12px;
+    padding-top: 6px;
+  }
+  &.error{
+    .form-control{
+      border: 1px solid $c-red;
+      &:focus{
+        box-shadow: 0 0 4px rgba($c-red, 0.8);
+        border-color: rgba($c-red, 0.8);
+      }
+    }
+    .tip{
+      color: $c-red;
+      display: block;
+    }
   }
 }
 
