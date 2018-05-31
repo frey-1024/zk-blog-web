@@ -1,15 +1,26 @@
 @import "../color";
 .form{
-  width: 400px;
   margin: auto;
+  border: 1px solid $c-border;
+  border-radius: 8px;
+  padding: 25px 20px;
+  box-shadow: 0 2px 18px rgba($c-black,.2);
+  &-title{
+    text-align: center;
+    color: $c-text;
+    font-size: 20px;
+    font-weight: 600;
+    padding-bottom: 20px;
+  }
 }
 .form-group{
   margin-bottom: 10px;
-  .form-title{
-    font-size: 14px;
+  .form-label{
+    font-size: 12px;
     font-weight: 500;
     padding-bottom: 4px;
     display: block;
+    color: $c-text;
   }
   .form-control{
     -webkit-appearance: none;
@@ -18,6 +29,7 @@
     width: 100%;
     border: 1px solid $c-border;
     border-radius: 4px;
+    font-size: 14px;
     transition: border-color,box-shadow .3s;
     &:focus{
       box-shadow: 0 0 4px rgba($c-blue, 0.8);
