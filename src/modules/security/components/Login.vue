@@ -62,6 +62,7 @@
           return;
         }
         console.log('success');
+        this.$zkMessage('aaaa');
       },
     },
     components: {
