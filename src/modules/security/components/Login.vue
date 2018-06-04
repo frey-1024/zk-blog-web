@@ -61,8 +61,7 @@
         if (!this.validate()) {
           return;
         }
-        console.log('success');
-        this.$zkMessage('aaaa');
+        this.$zkMessage.warning('aaaa');
       },
     },
     components: {

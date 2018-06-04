@@ -33,7 +33,7 @@ module.exports = {
     // 代码注释需要空格
     'spaced-comment': 2,
     // 忽略注释缩进
-    'indent': ["error", 2, { "ignoreComments": true }],
+    'indent': ["error", 2, { "ignoreComments": true, "SwitchCase": 1}],
     'no-unused-expressions': 'off',
     // allow debugger during development
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off'
