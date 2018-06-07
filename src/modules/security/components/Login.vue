@@ -16,7 +16,9 @@
 </template>
 
 <script>
+  import md5 from 'blueimp-md5';
   import { isBlank } from '../../core/utils/string';
+  import { zkFetch } from '../../core/utils/fetch';
   export default {
     data() {
       return {
@@ -33,6 +35,16 @@
           pwd: ''
         },
       };
+    },
+    mounted() {
+      zkFetch('http://localhost:9090/security/login').post({
+        'name': '在沙发22939777上8的',
+        'password': '3344'
+      }).then((data) => {
+        console.log(data);
+      }).catch((e) => {
+        console.log(e);
+      });
     },
     methods: {
       setErrorStatus(key, status = false, text = '') {
@@ -62,6 +74,9 @@
           return;
         }
         this.$zkMessage.warning('aaaa');
+        // md5加密
+        const v = md5('dddddd');
+        console.log(v);
       },
     },
     components: {

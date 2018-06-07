@@ -11,5 +11,9 @@ export default [{
     name: 'register',
     path: 'register',
     component: () => import('./components/Register.vue')
+  }, {
+    name: 'profile',
+    path: 'profile',
+    component: () => import('./components/Profile.vue')
   }]
 }];

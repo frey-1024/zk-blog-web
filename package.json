@@ -14,6 +14,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "blueimp-md5": "^2.10.0",
     "highlight.js": "^9.12.0",
     "vue": "^2.5.2",
     "vue-awesome": "^3.0.0",
