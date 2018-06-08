@@ -5,7 +5,11 @@
  */
 
 export function isBlank (val) {
-  return val === null || typeof val === 'undefined' || val === '' || val.trim() === '';
+  return isUndef(val) || val === '' || val.trim() === '';
+}
+
+export function isUndef(val) {
+  return val === null || typeof val === 'undefined';
 }
 
 export function isEmptyObject (obj) {

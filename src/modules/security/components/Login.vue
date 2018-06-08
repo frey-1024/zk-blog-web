@@ -18,7 +18,7 @@
 <script>
   import md5 from 'blueimp-md5';
   import { isBlank } from '../../core/utils/string';
-  import { zkFetch } from '../../core/utils/fetch';
+  import { login } from '../services/apiService';
   export default {
     data() {
       return {
@@ -37,16 +37,30 @@
       };
     },
     mounted() {
-      zkFetch('http://localhost:9090/security/login').post({
-        'name': '在沙发22939777上8的',
-        'password': '3344'
-      }).then((data) => {
-        console.log(data);
-      }).catch((e) => {
-        console.log(e);
-      });
+//      zkFetch('http://localhost:9090/security/login').post({
+//        'name': '在沙发22939777上8的',
+//        'password': '3344'
+//      }).then((data) => {
+//        console.log(data);
+//      }).catch((e) => {
+//        console.log(e);
+//      });
+//      login.post().then((data) => {
+//        console.log(data.body);
+//      }).catch();
+      this.fn();
     },
     methods: {
+      async fn() {
+        await login.postAwait({
+          'name': '在沙发22939777上8的',
+          'password': '3344'
+        }, {
+          user: 'aaaa',
+          aa: 'ssss',
+          ll: '444'
+        });
+      },
       setErrorStatus(key, status = false, text = '') {
         this.error[key] = status;
         this.error[`${key}Jitter`] = status;
