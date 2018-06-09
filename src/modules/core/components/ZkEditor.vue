@@ -8,13 +8,13 @@
           </a>
           <span class="zk-editor-menu-separator" v-if="item.separator">|</span>
           <!--下拉选择框-->
-          <zk-dropdown
+          <dropdown
             v-if="item.dropMenus && item.dropMenus.length"
             :dropStyle="item.dropStyle"
             :dropList.sync="item.dropMenus"
             v-show="item.show"
             @selected="getSelectAtDropdown(item, $event)"
-          ></zk-dropdown>
+          ></dropdown>
         </li>
       </ul>
       <ul class="zk-editor-menu flex-row row-right">
@@ -182,7 +182,7 @@
       },
     },
     components: {
-      ZkDropdown: () => import('./ZkDropdown.vue'),
+      dropdown: () => import('./editor/dropdown.vue'),
       InsertCode: () => import('./editor/InsertCode.vue')
     },
     destroyed() {

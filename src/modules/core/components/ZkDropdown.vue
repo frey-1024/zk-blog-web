@@ -1,81 +1,106 @@
 <template>
-  <transition-group tag="ul" name="push" class="zk-dropdown-list" :style="dropStyle" mode="in-out">
-    <li v-for="item in menus" :key="item.name">
-      <a class="flex-row row-left" @click.stop="selectItem(item)" @mousedown.stop="fn" href="javascript:;" :class="{'active': item.active}">
-        <i class="icon icon-checked"></i>
-        <span v-text="item.name"></span>
-      </a>
-    </li>
-  </transition-group>
+  <section class="zk-dropdown-wrapper">
+    <div class="zk-dropdown-title" @click="showDropdownMenu">
+      <slot name="title"></slot>
+    </div>
+    <transition name="dropdown">
+      <div class="zk-dropdown-menu" v-show="show" @click="hideDropdownMenu" :class="`zk-dropdown-menu-${position.y} zk-dropdown-menu-${position.x}`">
+        <div class="zk-options-wrapper">
+          <div class="zk-options">
+            <slot name="menu"></slot>
+          </div>
+        </div>
+      </div>
+    </transition>
+  </section>
 </template>
+
 <script>
   export default {
     props: {
-      dropStyle: {
+      position: {
         type: Object,
-        required: false,
-        default: {
-          left: 0,
-          top: 0,
-        }
-      },
-      dropList: {
-        type: Array,
-        required: true,
-      },
+        default: () => { return { x: 'left', y: 'bottom' }; },
+      }
     },
     data() {
       return {
-        menus: this.dropList,
+        show: false,
       };
     },
+    mounted() {
+      window.addEventListener('click', this.hideDropdownMenu, false);
+    },
     methods: {
-      fn() {},
-      selectItem(item) {
-        this.menus.forEach((menu) => {
-          menu.active = false;
-        });
-        item.active = true;
-        this.$emit('selected:menu-list', this.menus);
-        this.$emit('selected', item);
+      showDropdownMenu(ev) {
+        ev.stopPropagation();
+        this.show = !this.show;
       },
+      hideDropdownMenu(ev) {
+        if (ev) {
+          ev.stopPropagation();
+        }
+        this.show = false;
+      }
+    },
+    destroyed() {
+      window.removeEventListener('click', this.hideDropdownMenu, false);
     }
   };
 </script>
-<style lang="scss">
+
+<style lang="scss" scoped>
   @import "../styles/color";
-  .zk-dropdown-list{
-    position: absolute;
-    z-index: 3;
-    overflow: auto;
-    border: 1px solid $c-border;
-    background-color: $c-white;
-    & > li{
-      & > a{
-        padding: 4px 8px;
-        color: inherit;
-        &:hover, &.active{
-          background-color: $c-blue;
-          color: $c-white;
-        }
-        &.active{
-          .icon-checked{
-            visibility: visible;
-          }
-        }
+  .zk-dropdown-{
+    &wrapper{
+      position: relative;
+    }
+    &title{
+      text-align: center;
+    }
+    &menu{
+      position: absolute;
+      min-width: 150px;
+      max-height: 300px;
+      padding: 10px;
+      margin-left: -10px;
+      overflow: hidden;
+      &-top{
+        bottom: 100%;
       }
-      .icon-checked{
-        margin-right: 5px;
-        visibility: hidden;
+      &-bottom{
+        top: 100%;
+      }
+      &-left{
+        left: -14px;
+      }
+      &-right{
+        right: -14px;
       }
     }
   }
-  // 动画过渡
-  .push-enter-active, .push-leave-active {
-    transition: all 1s;
+
+  .zk-options-wrapper{
+    overflow: hidden;
+    border: 1px solid $c-border;
+    border-radius: 4px;
+    background-color: $c-white;
+    box-shadow: 0 2px 12px 0 rgba($c-black,.1);
   }
-  .push-enter, .push-leave-to {
-    transform: translateX(60px);
-    opacity: 0;
+  .zk-options{
+    height: 100%;
+    overflow: scroll;
+    margin-bottom: -17px;
+    margin-right: -17px;
+    padding: 8px 0;
+  }
+  // 动画过渡
+  .dropdown-enter-active, .dropdown-leave-active {
+    transition: all 0.3s;
+    transform-origin: center top;
+  }
+  .dropdown-enter, .dropdown-leave-to {
+    max-height: 0;
+    opacity: 0.6;
   }
 </style>

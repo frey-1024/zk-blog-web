@@ -1,11 +1,14 @@
 import Vue from 'vue';
 import { objMerge, isEmptyObject, isUndef } from './string';
+// 接口基本链接
+const path = process.env.API;
 
 function showMessage(msg) {
   Vue.prototype.$zkMessage.danger(msg);
 }
 
 function handleFetch(url, options) {
+  url = path + url;
   return fetch(url, options).then(res => res.json());
 }
 

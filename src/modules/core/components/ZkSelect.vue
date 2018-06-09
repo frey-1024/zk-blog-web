@@ -130,20 +130,18 @@
     }
   }
   .zk-dropdown-icon{
-    transition: all 0.3s;
+    transition: all 0.6s;
     &.active{
       transform: rotate(-180deg);
     }
   }
-
   // 动画过渡
   .dropdown-enter-active, .dropdown-leave-active {
     transition: all 0.3s;
     transform-origin: center top;
   }
   .dropdown-enter, .dropdown-leave-to {
-    /*transform:scaleY(0);*/
     max-height: 0;
-    opacity: 0;
+    opacity: 0.6;
   }
 </style>

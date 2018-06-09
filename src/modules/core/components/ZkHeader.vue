@@ -1,5 +1,5 @@
 <template>
-  <header class="zk-header">
+  <header class="zk-header fs-16">
     <div class="container pc-show pc-nav">
       <div class="flex-row nav">
         <ul class="nav-list flex-row row-left">
@@ -10,9 +10,32 @@
             <a href="javascript:;" @click="goView(item)" :class="{'active': pathName === item.pathName}">{{item.text}}</a>
           </li>
         </ul>
-        <ul class="flex-row row-right nav-user">
+        <ul class="flex-row row-right nav-user" v-if="!isLogin">
           <li><zk-button class="btn btn-default" @click="go('register')">注册</zk-button></li>
           <li><zk-button class="btn btn-blue" @click="go('login')">登录</zk-button></li>
+        </ul>
+        <ul class="flex-row row-right nav-user" v-if="isLogin">
+          <li>
+            <icon name="bell"/>
+          </li>
+          <li v-if="isLogin">
+            <zk-dropdown :position="{x: 'right', y: 'bottom'}">
+              <slot slot="title">
+                <img src="http://f2.topitme.com/2/6a/bc/113109954583dbc6a2o.jpg" style="width: 30px;height: 30px; border-radius: 50%;"/>
+              </slot>
+              <slot slot="menu">
+                <ul>
+                  <li>1111 2222 44444</li>
+                  <li>1111</li>
+                  <li>1111</li>
+                  <li>1111</li>
+                  <li>1111</li>
+                  <li>1111</li>
+                  <li>1111</li>
+                </ul>
+              </slot>
+            </zk-dropdown>
+          </li>
         </ul>
       </div>
     </div>
@@ -41,6 +64,7 @@
 </template>
 
 <script>
+  import { mapState } from 'vuex';
   export default {
     data() {
       return {
@@ -64,14 +88,16 @@
           text: '关于',
           appIcon: 'user',
           pathName: 'user',
-        }],
+        }]
       };
     },
     computed: {
       pathName() {
-        console.log(this.$route.name);
         return this.$route.name;
-      }
+      },
+      ...mapState('user', {
+        isLogin: state => state.isLogin,
+      })
     },
     methods: {
       goView(item) {
@@ -80,6 +106,9 @@
       go(name) {
         this.$router.push({ name });
       },
+    },
+    components: {
+      ZkDropdown: () => import('./ZkDropdown.vue'),
     }
   };
 </script>
