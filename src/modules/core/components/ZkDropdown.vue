@@ -5,8 +5,8 @@
     </div>
     <transition name="dropdown">
       <div class="zk-dropdown-menu" v-show="show" @click="hideDropdownMenu" :class="`zk-dropdown-menu-${position.y} zk-dropdown-menu-${position.x}`">
-        <div class="zk-options-wrapper">
-          <div class="zk-options">
+        <div class="zk-dropdown-hidden">
+          <div class="zk-dropdown-scroll">
             <slot name="menu"></slot>
           </div>
         </div>
@@ -62,37 +62,35 @@
       position: absolute;
       min-width: 150px;
       max-height: 300px;
-      padding: 10px;
-      margin-left: -10px;
       overflow: hidden;
       &-top{
         bottom: 100%;
+        padding-bottom: 6px;
       }
       &-bottom{
         top: 100%;
+        padding-top: 6px;
       }
       &-left{
-        left: -14px;
+        left: 0;
       }
       &-right{
-        right: -14px;
+        right: 0;
       }
     }
-  }
-
-  .zk-options-wrapper{
-    overflow: hidden;
-    border: 1px solid $c-border;
-    border-radius: 4px;
-    background-color: $c-white;
-    box-shadow: 0 2px 12px 0 rgba($c-black,.1);
-  }
-  .zk-options{
-    height: 100%;
-    overflow: scroll;
-    margin-bottom: -17px;
-    margin-right: -17px;
-    padding: 8px 0;
+    &hidden{
+      overflow: hidden;
+      border: 1px solid $c-border;
+      border-radius: 4px;
+      background-color: $c-white;
+      box-shadow: 0 2px 12px 0 rgba($c-black,.1);
+    }
+    &scroll{
+      height: 100%;
+      overflow: scroll;
+      margin-bottom: -17px;
+      margin-right: -17px;
+    }
   }
   // 动画过渡
   .dropdown-enter-active, .dropdown-leave-active {

@@ -1,0 +1,16 @@
+@import "../color";
+.menu-item{
+  border-bottom: 1px solid $c-light-border;
+  padding: 10px;
+  cursor: pointer;
+  text-align: center;
+  &:last-child{
+    border-bottom: none;
+  }
+  &:hover{
+    background-color: $c-light-gray;
+  }
+  &.active{
+    color: $c-green;
+  }
+}

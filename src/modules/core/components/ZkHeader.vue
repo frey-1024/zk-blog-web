@@ -24,15 +24,8 @@
                 <img src="http://f2.topitme.com/2/6a/bc/113109954583dbc6a2o.jpg" style="width: 30px;height: 30px; border-radius: 50%;"/>
               </slot>
               <slot slot="menu">
-                <ul>
-                  <li>1111 2222 44444</li>
-                  <li>1111</li>
-                  <li>1111</li>
-                  <li>1111</li>
-                  <li>1111</li>
-                  <li>1111</li>
-                  <li>1111</li>
-                </ul>
+                <div class="menu-item active">个人信息</div>
+                <div class="menu-item">退出</div>
               </slot>
             </zk-dropdown>
           </li>
