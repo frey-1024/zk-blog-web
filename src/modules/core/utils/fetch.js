@@ -64,9 +64,9 @@ function handleUrl(url, params = {}) {
  * @param args
  */
 function handleAwait(method, ...args) {
-  this[method](...args).then((data) => {
-    if (data.status === 0) {
-      return data.body;
+  return this[method](...args).then((data) => {
+    if (data.code === 0) {
+      return data.data;
     }
     showMessage(data.msg || '接口请求错误。');
   }).catch((e) => {
@@ -123,16 +123,16 @@ export function zkFetch (url, options = {}) {
         });
       }, */
     getAwait(params) {
-      handleAwait.call(this, 'get', params);
+      return handleAwait.call(this, 'get', params);
     },
     postAwait(data, params) {
-      handleAwait.call(this, 'post', data, params);
+      return handleAwait.call(this, 'post', data, params);
     },
     deleteAwait(params) {
-      handleAwait.call(this, 'delete', params);
+      return handleAwait.call(this, 'delete', params);
     },
     putAwait(data, params) {
-      handleAwait.call(this, 'put', data, params);
+      return handleAwait.call(this, 'put', data, params);
     }
   };
 }

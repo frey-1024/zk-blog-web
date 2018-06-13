@@ -19,6 +19,7 @@
   import md5 from 'blueimp-md5';
   import { isBlank } from '../../core/utils/string';
   import { login } from '../services/apiService';
+  import { SET_STATE } from '../../core/stores/mutationTypes';
   export default {
     data() {
       return {
@@ -37,30 +38,8 @@
       };
     },
     mounted() {
-//      zkFetch('http://localhost:9090/security/login').post({
-//        'name': '在沙发22939777上8的',
-//        'password': '3344'
-//      }).then((data) => {
-//        console.log(data);
-//      }).catch((e) => {
-//        console.log(e);
-//      });
-//      login.post().then((data) => {
-//        console.log(data.body);
-//      }).catch();
-      this.fn();
     },
     methods: {
-      async fn() {
-        await login.postAwait({
-          'name': '在沙发22939777上8的',
-          'password': '3344'
-        }, {
-          user: 'aaaa',
-          aa: 'ssss',
-          ll: '444'
-        });
-      },
       setErrorStatus(key, status = false, text = '') {
         this.error[key] = status;
         this.error[`${key}Jitter`] = status;
@@ -83,14 +62,20 @@
         }
         return true;
       },
-      login() {
+      async login() {
         if (!this.validate()) {
           return;
         }
-        this.$zkMessage.warning('aaaa');
-        // md5加密
-        const v = md5('dddddd');
-        console.log(v);
+        const { name, pwd } = this.user;
+        const data = await login.postAwait({
+          name,
+          password: md5(pwd)
+        });
+        if (data) {
+          this.$zkMessage.success('登录成功。');
+          this.$store.commit(`user/${SET_STATE}`, data);
+          this.$router.replace({name: 'home'});
+        }
       },
     },
     components: {

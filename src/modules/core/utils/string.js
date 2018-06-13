@@ -5,7 +5,7 @@
  */
 
 export function isBlank (val) {
-  return isUndef(val) || val === '' || val.trim() === '';
+  return isUndef(val) || val === '' || val.toString().trim() === '';
 }
 
 export function isUndef(val) {

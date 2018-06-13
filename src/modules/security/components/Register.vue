@@ -11,12 +11,15 @@
       <input class="form-control" v-model="user.pwd" type="password" placeholder="密码"/>
       <p class="tip" v-text="error.pwdTip"></p>
     </zk-jitter>
-    <zk-button @click="login" class="btn btn-blue btn-md w-100 mt-10">注册</zk-button>
+    <zk-button @click="register" class="btn btn-blue btn-md w-100 mt-10">注册</zk-button>
   </section>
 </template>
 
 <script>
+  import md5 from 'blueimp-md5';
   import { isBlank } from '../../core/utils/string';
+  import { register } from '../services/apiService';
+  import { SET_STATE } from '../../core/stores/mutationTypes';
   export default {
     data() {
       return {
@@ -57,11 +60,20 @@
         }
         return true;
       },
-      login() {
+      async register() {
         if (!this.validate()) {
           return;
         }
-        this.$zkMessage.warning('aaaa');
+        const { name, pwd } = this.user;
+        const data = await register.postAwait({
+          name,
+          password: md5(pwd)
+        });
+        if (data) {
+          this.$zkMessage.success('注册成功。');
+          this.$store.commit(`user/${SET_STATE}`, data);
+          this.$router.replace({name: 'home'});
+        }
       },
     },
     components: {

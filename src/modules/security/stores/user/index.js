@@ -5,7 +5,7 @@ export default {
   state: {
     id: null,
     token: null,
-    isLogin: true,
+    isLogin: false
   },
   mutations,
 };

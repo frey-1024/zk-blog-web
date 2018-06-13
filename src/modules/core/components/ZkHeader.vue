@@ -15,10 +15,11 @@
           <li><zk-button class="btn btn-blue" @click="go('login')">登录</zk-button></li>
         </ul>
         <ul class="flex-row row-right nav-user" v-if="isLogin">
-          <li>
-            <icon name="bell"/>
+          <li class="text-gray pointer fs-20 pos-re bell">
+            <sup class="badge is-fixed">10</sup>
+            <icon name="bell" class="dis-b"/>
           </li>
-          <li v-if="isLogin">
+          <li class="pointer">
             <zk-dropdown :position="{x: 'right', y: 'bottom'}">
               <slot slot="title">
                 <img src="http://f2.topitme.com/2/6a/bc/113109954583dbc6a2o.jpg" style="width: 30px;height: 30px; border-radius: 50%;"/>
@@ -102,7 +103,7 @@
     },
     components: {
       ZkDropdown: () => import('./ZkDropdown.vue'),
-    }
+    },
   };
 </script>
 
@@ -138,7 +139,10 @@
       }
       & > .nav-user{
         & > li{
-          margin-left: 15px;
+          margin-left: 25px;
+        }
+        .bell:hover{
+          color: $c-blue;
         }
       }
     }
