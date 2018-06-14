@@ -26,7 +26,7 @@
               </slot>
               <slot slot="menu">
                 <div class="menu-item active" @click="go('profile')">个人中心</div>
-                <div class="menu-item">退出</div>
+                <div class="menu-item" @click="logout">退出</div>
               </slot>
             </zk-dropdown>
           </li>
@@ -59,6 +59,7 @@
 
 <script>
   import { mapState } from 'vuex';
+  import { SET_STATE } from '../../core/stores/mutationTypes';
   export default {
     data() {
       return {
@@ -99,6 +100,11 @@
       },
       go(name) {
         this.$router.push({ name });
+      },
+      logout() {
+        this.$zkConfirm.warning('你确定退出登录吗？', '提示').then(() => {
+          this.$store.commit(`user/${SET_STATE}`, {});
+        }).catch(() => {});
       },
     },
     components: {

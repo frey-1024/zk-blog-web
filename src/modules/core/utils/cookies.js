@@ -1,3 +1,5 @@
+import { isBlank } from './string';
+
 function isUndefined (value) {
   return typeof value === 'undefined';
 }
@@ -98,6 +100,10 @@ export default {
   },
   // 设置或者修改cookie，value是字符串
   set: function (key, value, options) {
+    if (isBlank(value)) {
+      this.remove(key);
+      return;
+    }
     cookieWriter(key, value, options);
   },
   // 设置或者修改cookie,value是对象

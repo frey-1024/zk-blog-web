@@ -74,25 +74,31 @@
     margin-top: 15vh;
     &-title{
       padding: 15px;
-      border-bottom: 1px solid $c-border;
+      border-bottom: 1px solid $c-light-border;
     }
     &-body{
       padding: 10px 15px;
     }
     &-footer{
-      border-top: 1px solid $c-border;
+      border-top: 1px solid $c-light-border;
       padding: 10px 15px;
+      .btn{
+        margin-left: 20px;
+      }
     }
 
     // 宽度大小
     &.lg{
-      width: 75%;
+      width: 960px;
     }
     &.md{
-      width: 50%;
+      width: 700px;
     }
     &.sm{
-      width: 40%;
+      width: 600px;
+    }
+    &.xs{
+      width: 420px;
     }
   }
   // 动画过渡
