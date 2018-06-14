@@ -8,6 +8,13 @@ export function isBlank (val) {
   return isUndef(val) || val === '' || val.toString().trim() === '';
 }
 
+export function isAllBlank(...args) {
+  return args.every(arg => isBlank(arg));
+}
+export function isAllFull(...args) {
+  return args.every(arg => !isBlank(arg));
+}
+
 export function isUndef(val) {
   return val === null || typeof val === 'undefined';
 }
