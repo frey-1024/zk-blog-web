@@ -1,0 +1,51 @@
+<template>
+  <div>
+    <h1 class="article-title fs-30" v-text="article.title"></h1>
+    <ul class="operations flex-row row-left text-gray mt-10">
+      <li class="flex-row row-left mr-15">
+        <icon name="thumbs-up" class="mr-4"/>
+        赞（<span v-text="article.votes"></span>）
+      </li>
+      <li class="flex-row row-left mr-15">
+        <icon name="eye" class="mr-4"/>
+        阅读（<span v-text="article.previewCount"></span>）
+      </li>
+      <li class="flex-row row-left mr-15">
+        <icon name="calendar-alt" class="mr-4"/>
+        发布于（<span v-text="article.updateDate"></span>）
+      </li>
+    </ul>
+    <div class="pt-15" v-html="article.content"></div>
+  </div>
+</template>
+
+<script>
+  import { isBlank } from '../../core/utils/string';
+  import { articleById } from '../services/apiService';
+  export default {
+    data() {
+      return {
+        articleId: this.$route.params.id,
+        article: {},
+      };
+    },
+    created() {
+      this.getArticle();
+    },
+    methods: {
+      async getArticle() {
+        const articleId = this.$route.params.id;
+        if (isBlank(articleId)) {
+          this.$router.replace({ name: 'home' });
+          return;
+        }
+        this.article = await articleById.getAwait({id: this.articleId});
+      }
+    },
+  };
+</script>
+
+<style lang="scss">
+  .article-title{
+  }
+</style>

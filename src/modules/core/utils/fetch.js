@@ -114,7 +114,11 @@ export function zkFetch (url, options = {}) {
      * @param data
      * @param params
      */
-    put(data, params) {},
+    put(data, params) {
+      opts.method = 'post';
+      opts.body = JSON.stringify(data);
+      return handleFetch(handleUrl(url, params), opts);
+    },
     // 下面这些方法是对上面方法的扩展，写法更洁净，并提供错误提示
     /* async fn() {
         const data = await api.postAwait({

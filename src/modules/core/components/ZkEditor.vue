@@ -27,9 +27,7 @@
       </ul>
     </div>
     <div class="zk-editor-body clearfix" :class="{'show-preview': showPreview}">
-      <div class="zk-editor-content pull-left" contenteditable ref="contenteditable" @mousedown.stop="editorMouseDown" @mouseup.stop="editorMouseUp" @keyup.stop="editorKeyUp">
-        <p><br></p>
-      </div>
+      <div class="zk-editor-content pull-left" v-html="defaultValue" contenteditable ref="contenteditable" @mousedown.stop="editorMouseDown" @mouseup.stop="editorMouseUp" @keyup.stop="editorKeyUp"></div>
       <transition name="opacity">
         <div class="zk-editor-preview pull-left" v-if="showPreview" v-html="previewHtml"></div>
       </transition>
@@ -45,10 +43,15 @@
   import { getSelection, getCurrentRange, removeAllRanges, restoreSelection, isSelectionEmpty } from '../utils/editor/selection';
   import { setUtilsStatusByRange } from '../utils/editor/utilStatus';
   import { setContentByRange } from '../utils/editor/content';
-  import 'highlight.js/styles/github.css';
 
   export default {
     name: 'editor',
+    props: {
+      defaultValue: {
+        type: String,
+        default: ' <p><br></p> '
+      }
+    },
     data () {
       return {
         utils: [],
@@ -66,8 +69,9 @@
       this.copyMenuData();
     },
     mounted() {
+      const el = this.$refs.contenteditable;
       // 设置焦点
-      this.$refs.contenteditable.focus();
+      el.focus();
       window.addEventListener('click', this.hideDropdownMenu, false);
     },
     methods: {
@@ -76,6 +80,8 @@
         blocks.forEach((block) => {
           hljs.highlightBlock(block);
         });
+        const el = this.$refs.contenteditable;
+        this.refreshPreviewHtml(el.innerHTML);
       },
       getInsertCode(data) {
         restoreSelection(this._currentRange);
@@ -153,6 +159,9 @@
        * @param html
        */
       refreshPreviewHtml(html) {
+        if (this.value !== html) {
+          this.$emit('refresh', html);
+        }
         if (!this.showPreview || this.previewHtml === html) {
           return;
         }

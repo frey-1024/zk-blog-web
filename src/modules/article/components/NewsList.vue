@@ -1,9 +1,9 @@
 <template>
   <ul class="news-list">
     <li v-for="item in dataList" :key="item.id">
-      <h3 v-text="item.title" @click="goArticleView(item.id)" class="news-item-title pb-15"></h3>
+      <h3 v-text="item.title" class="news-item-title pb-15"></h3>
       <p class="article-excerpt" v-text="item.excerpt"></p>
-      <ul class="operations flex-row row-left text-gray mt-10">
+      <ul class="flex-row row-left text-gray mt-10">
         <li class="flex-row row-left mr-15">
           <icon name="thumbs-up" class="mr-4"/>
           赞（<span v-text="item.votes"></span>）
@@ -35,12 +35,8 @@
       };
     },
     mounted() {
+      console.log(this.dataList);
     },
-    methods: {
-      goArticleView(id) {
-        this.$router.push({ name: 'view', params: { id } });
-      },
-    }
   };
 </script>
 
