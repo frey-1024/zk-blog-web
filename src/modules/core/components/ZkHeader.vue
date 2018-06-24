@@ -15,7 +15,10 @@
           <li><zk-button class="btn btn-blue" @click="go('login')">登录</zk-button></li>
         </ul>
         <ul class="flex-row row-right nav-user" v-if="isLogin">
-          <li class="text-gray pointer fs-20 pos-re bell">
+          <li class="flex-row">
+           <zk-button class="btn btn-blue" @click="go('edit')">新随笔</zk-button>
+          </li>
+          <li class="text-gray pointer fs-20 pos-re bell flex-row">
             <sup class="badge is-fixed">10</sup>
             <icon name="bell" class="dis-b"/>
           </li>
@@ -117,6 +120,8 @@
   @import "../styles/color";
   .zk-{
     &header{
+      position: relative;
+      z-index: 3;
       box-shadow: 0 2px 10px 0 rgba($c-black,.1), 0 1px rgba($c-black,.1);
       background: $c-bg-gray;
       width: 100%;

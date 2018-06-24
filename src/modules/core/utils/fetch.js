@@ -73,9 +73,9 @@ function handleAwait(method, ...args) {
     showMessage(e.msg || '接口请求错误。');
   });
 }
-export function zkFetch (url, options = {}) {
+function getFetchOpts(options) {
   // 合并请求配置
-  const opts = objMerge({
+  return objMerge({
     cache: 'no-cache',
     credentials: 'same-origin',
     headers: {
@@ -85,14 +85,16 @@ export function zkFetch (url, options = {}) {
     redirect: 'follow',
     referrer: 'no-referrer',
   }, options, true);
+}
+export function zkFetch (url, options = {}) {
+  const initOptions = getFetchOpts(options);
   return {
     /**
      * 获取接口
      * @param params
      */
     get(params) {
-      opts.method = 'get';
-      return handleFetch(handleUrl(url, params), opts);
+      return handleFetch(handleUrl(url, params), { ...initOptions, method: 'get' });
     },
     /**
      * post 接口
@@ -100,24 +102,22 @@ export function zkFetch (url, options = {}) {
      * @param params
      */
     post(data, params) {
-      opts.method = 'post';
-      opts.body = JSON.stringify(data);
-      return handleFetch(handleUrl(url, params), opts);
+      return handleFetch(handleUrl(url, params), { ...initOptions, method: 'post', body: JSON.stringify(data) });
     },
     /**
      * 删除方法
      * @param params
      */
-    delete(params) {},
+    delete(params) {
+      return handleFetch(handleUrl(url, params), { ...initOptions, method: 'delete' });
+    },
     /**
      * 修改方法
      * @param data
      * @param params
      */
     put(data, params) {
-      opts.method = 'post';
-      opts.body = JSON.stringify(data);
-      return handleFetch(handleUrl(url, params), opts);
+      return handleFetch(handleUrl(url, params), { ...initOptions, method: 'put', body: JSON.stringify(data) });
     },
     // 下面这些方法是对上面方法的扩展，写法更洁净，并提供错误提示
     /* async fn() {
