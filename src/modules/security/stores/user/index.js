@@ -1,7 +1,7 @@
 import mutations from './mutations';
 
 export default {
-  namespaced: true
+  namespaced: true,
   state: {
     id: null,
     token: null,
