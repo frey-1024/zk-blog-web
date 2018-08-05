@@ -7,7 +7,7 @@ export default {
     state.id = newState.id;
     state.token = newState.token;
     state.isLogin = isAllFull(newState.id, newState.token);
-    cookies.set('id', state.id);
-    cookies.set('token', state.token);
+    cookies.set('id', state.id, {path: '/'});
+    cookies.set('token', state.token, {path: '/'});
   }
 };

@@ -9,53 +9,76 @@
         <label class="form-label">简介</label>
         <textarea v-model="article.excerpt" class="form-control" placeholder="请输入简介"></textarea>
       </div>
-      <zk-editor :default-value="defaultContent" @refresh="resetContent"></zk-editor>
-      <zk-button class="btn btn-blue" @click="save">保存</zk-button>
+      <!--<zk-editor :default-value="defaultContent" @refresh="resetContent"></zk-editor>-->
+      <div class="pb-20">
+        <mavon-editor
+          :value="article.markdown"
+          :boxShadow="false"
+          :navigation="true"
+          style="height: 100%"
+          @change="editorChange"
+        ></mavon-editor>
+      </div>
+      <div class="text-right">
+        <zk-button class="btn btn-default mr-20" @click="cancel">取消</zk-button>
+        <zk-button class="btn btn-blue" @click="save">保存</zk-button>
+      </div>
     </div>
   </div>
 </template>
 <script>
   import { isBlank } from '../../core/utils/string';
-  import ZkEditor from '../../core/components/ZkEditor.vue';
+//  import ZkEditor from '../../core/components/ZkEditor.vue';
+  import { mavonEditor } from 'mavon-editor';
   import { article, articleById } from '../services/apiService';
+  import 'mavon-editor/dist/css/index.css';
   export default {
     data() {
       return {
         article: {
           title: '',
           excerpt: '',
-          content: ''
+          html: '',
+          markdown: ''
         },
-        defaultContent: '',
+        articleId: this.$route.params && this.$route.params.id,
       };
     },
     created() {
-      const articleId = this.$route.params.id;
-      if (isBlank(articleId)) {
+      if (isBlank(this.articleId)) {
         return;
       }
       this.getArticle();
     },
     methods: {
-      resetContent(content) {
-        this.article.content = content;
+      editorChange(markdown, html) {
+        this.article.markdown = markdown;
+        this.article.html = html;
       },
       async getArticle() {
-        const articleId = this.$route.params.id;
-        if (isBlank(articleId)) {
-          this.$router.replace({ name: 'home' });
-          return;
-        }
-        this.article = await articleById.getAwait({id: articleId});
-        this.defaultContent = this.article.content;
+        this.article = await articleById.getAwait({id: this.articleId});
       },
       async save() {
-        const newArticle = await article.postAwait(this.article);
+        let newArticle, msg;
+        // 编辑
+        if (!isBlank(this.articleId)) {
+          msg = '编辑成功。';
+          newArticle = await article.putAwait(this.article);
+        } else { // 添加
+          msg = '添加成功。';
+          newArticle = await article.postAwait(this.article);
+        }
         this.$router.replace({ name: 'view', params: { id: newArticle.id } });
+        this.$zkMessage.success(msg);
+      },
+      cancel() {
+        this.$zkConfirm.warning('你确定取消吗？', '提示').then(() => {
+          this.$router.back();
+        }).catch(() => {});
       }
     },
     components: {
-      ZkEditor
+      mavonEditor
     }
   };
 </script>

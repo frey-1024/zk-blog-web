@@ -18,7 +18,7 @@
         编辑
       </li>
     </ul>
-    <div class="pt-15" v-html="article.content"></div>
+    <div class="pt-15 markdown-view" v-html="article.html"></div>
   </div>
 </template>
 
@@ -26,6 +26,7 @@
   import { isBlank } from '../../core/utils/string';
   import { articleById } from '../services/apiService';
   import { mapState } from 'vuex';
+  import 'highlight.js/styles/github.css';
   export default {
     data() {
       return {
@@ -63,6 +64,34 @@
     cursor: pointer;
     &:hover{
       color: #348FEE;
+    }
+  }
+  .markdown-view{
+    h1, h2, h3, h4{
+      border-bottom: 1px solid $c-light-border;
+    }
+    h1{
+      font-size: 22px;
+      padding-bottom: 10px;
+      margin-top: 20px;
+      margin-bottom: 16px;
+    }
+    h2{
+      font-size: 20px;
+      padding-bottom: 10px;
+      margin-top: 20px;
+      margin-bottom: 12px;
+    }
+    h3{
+      font-size: 18px;
+      padding-bottom: 10px;
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+    p{
+      padding-bottom: 15px;
+      line-height: 1.6;
+      font-size: 14px;
     }
   }
 </style>

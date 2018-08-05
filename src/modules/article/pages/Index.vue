@@ -5,7 +5,6 @@
 </template>
 
 <script>
-  import 'highlight.js/styles/github.css';
   export default {
     data() {
       return {

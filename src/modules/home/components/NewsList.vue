@@ -63,6 +63,7 @@
     color: $c-black;
     font-weight: normal;
     cursor: pointer;
+    display: inline-block;
     &:hover{
       color: $c-green;
     }
