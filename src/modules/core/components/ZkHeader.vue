@@ -172,6 +172,7 @@
       width: 100%;
       height: auto;
       padding: 4px 10px;
+      background-color: $c-white;
       box-shadow: 0 -1px rgba($c-black,.1), 0 -2px 10px rgba($c-black,.1);
       & > li{
         & > a{
