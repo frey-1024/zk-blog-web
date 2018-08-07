@@ -47,3 +47,18 @@ export function objMerge(obj1 = {}, obj2 = {}, isDepth) {
   });
   return result;
 }
+
+export function numberToArray(start, end) {
+  const result = [];
+  const isDesc = start > end;
+  if (isDesc) {
+    for (let i = start; i >= end; i--) {
+      result.push(i);
+    }
+  } else {
+    for (let i = start; i <= end; i++) {
+      result.push(i);
+    }
+  }
+  return result;
+}

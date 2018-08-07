@@ -1,5 +1,5 @@
 <template>
-  <ul class="news-list">
+  <transition-group tag="ul" name="list" class="news-list" mode="out-in">
     <li v-for="item in dataList" :key="item.id">
       <h3 v-text="item.title" @click="goArticleView(item.id)" class="news-item-title pb-15"></h3>
       <p class="article-excerpt" v-text="item.excerpt"></p>
@@ -18,7 +18,7 @@
         </li>
       </ul>
     </li>
-  </ul>
+  </transition-group>
 </template>
 
 <script>
@@ -47,9 +47,11 @@
 <style lang="scss" scoped>
   @import "../../core/styles/color";
   .news-list{
+    min-height: 600px;
     & > li {
       border-bottom: 1px solid $c-light-border;
       padding: 15px 0;
+      transition: all 0.5s linear;
       &:first-child{
         padding-top: 0;
       }
@@ -77,5 +79,14 @@
     line-height: 1.5;
     color: $c-gray;
     font-size: 14px;
+  }
+
+  /*动画过渡*/
+  .list-enter, .list-leave-active {
+    opacity: 0;
+    transform: translateY(-300px);
+  }
+  .list-leave-active {
+    position: absolute;
   }
 </style>
