@@ -48,7 +48,7 @@
           this.$router.replace({ name: 'home' });
           return;
         }
-        this.article = await articleById.getAwait({id: this.articleId});
+        this.article = await articleById.getAwait({id: this.articleId, type: 'content'});
       },
       goEdit() {
         this.$router.push({ name: 'edit', params: { id: this.articleId } });

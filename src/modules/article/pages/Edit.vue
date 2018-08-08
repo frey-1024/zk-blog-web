@@ -56,19 +56,19 @@
         this.article.html = html;
       },
       async getArticle() {
-        this.article = await articleById.getAwait({id: this.articleId});
+        this.article = await articleById.getAwait({id: this.articleId, type: 'detail'});
       },
       async save() {
-        let newArticle, msg;
+        let articleId, msg;
         // 编辑
         if (!isBlank(this.articleId)) {
           msg = '编辑成功。';
-          newArticle = await article.putAwait(this.article);
+          articleId = await article.putAwait(this.article);
         } else { // 添加
           msg = '添加成功。';
-          newArticle = await article.postAwait(this.article);
+          articleId = await article.postAwait(this.article);
         }
-        this.$router.replace({ name: 'view', params: { id: newArticle.id } });
+        this.$router.replace({ name: 'view', params: { id: articleId } });
         this.$zkMessage.success(msg);
       },
       cancel() {

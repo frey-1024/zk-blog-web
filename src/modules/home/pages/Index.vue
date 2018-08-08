@@ -2,8 +2,8 @@
   <div class="container pt-15 home-wrapper">
     <news-list :data-list="dataList.rows"></news-list>
     <pagination
-      v-if="dataList.pageAllNumber && dataList.pageAllNumber > pageSize"
-      :total="dataList.pageAllNumber"
+      v-if="dataList.total && dataList.total > pageSize"
+      :total="dataList.total"
       :current-page.sync="currentPage"
       prev-text="上一页"
       next-text="下一页"
@@ -14,7 +14,7 @@
 </template>
 
 <script>
-  import { articleBySearch } from '../../article/services/apiService';
+  import { articleList } from '../../article/services/apiService';
   export default {
     data() {
       return {
@@ -33,8 +33,8 @@
         this.getArticleList();
       },
       async getArticleList() {
-        this.dataList = await articleBySearch.postAwait({
-          pageNumber: this.currentPage,
+        this.dataList = await articleList.postAwait({
+          currentPage: this.currentPage,
           pageSize: this.pageSize
         });
       }
