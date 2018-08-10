@@ -19,6 +19,13 @@
       </li>
     </ul>
     <div class="pt-15 markdown-view" v-html="article.html"></div>
+    <commend
+      :avatar-url="'http://f2.topitme.com/2/6a/bc/113109954583dbc6a2o.jpg'"
+      :user-id="11"
+      :article-id="33"
+      @success="saveCommendSuccess"
+    ></commend>
+    <comment-list></comment-list>
   </div>
 </template>
 
@@ -52,8 +59,15 @@
       },
       goEdit() {
         this.$router.push({ name: 'edit', params: { id: this.articleId } });
+      },
+      saveCommendSuccess(val) {
+        console.log(val);
       }
     },
+    components: {
+      Commend: () => import('../components/Commend.vue'),
+      CommentList: () => import('../components/CommentList.vue')
+    }
   };
 </script>
 
