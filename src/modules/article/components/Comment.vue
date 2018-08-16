@@ -5,13 +5,13 @@
         <img :src="avatarUrl"/>
       </div>
       <div class="flex-1 form-group" :class="{'error': error}">
-        <textarea class="form-control" style="height: 80px;" placeholder="请输入内容" v-model="content"></textarea>
+        <textarea class="form-control" style="height: 80px; resize: none;" placeholder="请输入内容" v-model="content"></textarea>
         <p class="tip" v-text="tip"></p>
       </div>
     </div>
     <div class="text-right">
       <zk-button class="btn btn-default mr-20" @click="cancel">取消</zk-button>
-      <zk-button class="btn btn-blue" @click="save">保存</zk-button>
+      <zk-button class="btn btn-blue" @click="save" :loading="loading">保存</zk-button>
     </div>
   </div>
 </template>
@@ -23,14 +23,10 @@
         type: String,
         required: true
       },
-      userId: {
-        type: Number,
-        required: true
-      },
-      articleId: {
-        type: Number,
-        required: true
-      },
+      loading: {
+        type: Boolean,
+        default: false
+      }
     },
     data() {
       return {

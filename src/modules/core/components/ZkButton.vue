@@ -1,7 +1,8 @@
 <template>
-  <button class="zk-btn">
+  <button class="zk-btn" :class="{'disabled': loading}">
     <canvas class="zk-ripple" @click="ripple"></canvas>
     <slot></slot>
+    <icon name="spinner" pulse v-if="loading" class="pull-right ml-4"></icon>
   </button>
 </template>
 
@@ -17,6 +18,10 @@
       opacity: {
         type: Number,
         default: 0.4,
+      },
+      loading: {
+        type: Boolean,
+        default: false,
       }
     },
     data () {
@@ -44,6 +49,10 @@
         this.context = el.getContext('2d');
       },
       ripple(event) {
+        if (this.loading) {
+          event.stopPropagation();
+          return;
+        }
         // 把点击事件提交到父级
         this.$emit('click');
         // 清除上次没有执行的动画

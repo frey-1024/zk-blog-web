@@ -19,13 +19,10 @@
       </li>
     </ul>
     <div class="pt-15 markdown-view" v-html="article.html"></div>
-    <commend
-      :avatar-url="'http://f2.topitme.com/2/6a/bc/113109954583dbc6a2o.jpg'"
-      :user-id="11"
-      :article-id="33"
-      @success="saveCommendSuccess"
-    ></commend>
-    <comment-list></comment-list>
+    <comment-list
+      :article-id="articleId"
+      :user-id="userId"
+    ></comment-list>
   </div>
 </template>
 
@@ -44,6 +41,7 @@
     computed: {
       ...mapState('user', {
         isLogin: state => state.isLogin,
+        userId: state => state.id,
       })
     },
     created() {
@@ -65,7 +63,6 @@
       }
     },
     components: {
-      Commend: () => import('../components/Commend.vue'),
       CommentList: () => import('../components/CommentList.vue')
     }
   };

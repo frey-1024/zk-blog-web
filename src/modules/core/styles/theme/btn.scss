@@ -34,6 +34,10 @@
         border-color: $border;
         background-color: $background;
       }
+      &.disabled:hover{
+        border-color:  lighten($border, 4%);
+        background-color:  lighten($background, 10%);
+      }
     }
   }
 }
@@ -46,5 +50,6 @@
       (green $c-green $c-green $c-white)
 );
 
-
-
+.disabled{
+  cursor: not-allowed;
+}

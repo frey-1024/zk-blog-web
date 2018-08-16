@@ -13,6 +13,13 @@
 .text-gray{
   color: $c-gray;
 }
+.text-gray-hover{
+  @extend .text-gray;
+  cursor: pointer;
+  &:hover{
+    color: $c-green;
+  }
+}
 
 .text-white{
   color: $c-white;
