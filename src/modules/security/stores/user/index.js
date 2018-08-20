@@ -1,8 +1,8 @@
 import cookies from '../../../core/utils/cookies';
 import mutations from './mutations';
-import { isAllFull } from '../../../core/utils/string';
+import { getNumber, isAllFull } from '../../../core/utils/string';
 
-const id = cookies.get('id') || null;
+const id = getNumber(cookies.get('id'));
 const token = cookies.get('token') || null;
 
 export default {

@@ -62,3 +62,10 @@ export function numberToArray(start, end) {
   }
   return result;
 }
+
+export function getNumber(val) {
+  if (isBlank(val) || isNaN(Number(val))) {
+    return null;
+  }
+  return Number(val);
+}

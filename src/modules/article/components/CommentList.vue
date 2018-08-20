@@ -3,8 +3,9 @@
     <comment
       :avatar-url="'http://f2.topitme.com/2/6a/bc/113109954583dbc6a2o.jpg'"
       :loading="loading"
+      :remove.sync="remove"
       @success="saveComment"
-      @cancel="close()"
+      @cancel="close"
     ></comment>
     <ul class="comment-list">
       <li v-for="item in list" :key="item.id">
@@ -13,31 +14,35 @@
             <img src="http://f2.topitme.com/2/6a/bc/113109954583dbc6a2o.jpg"/>
           </div>
           <div class="flex-col row-left pl-10">
-            <span class="user-name fs-14 pb-4" v-text="item.name">畅呼呼</span>
+            <span class="user-name fs-14 pb-4" v-text="item.name"></span>
             <span class="text-gray" v-text="item.createDate"></span>
           </div>
         </div>
-        <pre class="comment-content" v-text="item.content">什么公司丫 正在找坑位</pre>
+        <pre class="content comment-content" v-text="item.content"></pre>
         <div class="flex-row row-left">
           <span class="mr-20 text-gray-hover flex-row row-left"> <icon name="thumbs-up" class="mr-4"/> 赞({{item.votes}})</span>
-          <span class="text-gray-hover flex-row row-left" @click="replayComment(item)"><icon name="reply" class="mr-4"></icon> 回复</span>
+          <span class="text-gray-hover flex-row row-left" @click="openReplyComment(item)"><icon name="reply" class="mr-4"></icon> 回复</span>
         </div>
-        <ul class="replay-list">
-          <li>
-            <div class="flex-row row-left">
-              <span class="text-blue">回复者</span> ：
-              <div class="flex-row row-left"><span class="text-blue pr-8">@被回复者</span> <pre>什么公司丫 正在找坑位什么公司丫 正在找坑位什么公司丫 正在找坑位什么公司丫 正在找坑位</pre></div>
+        <ul class="reply-list">
+          <li v-for="reply in item.replyList">
+            <div class="reply fs-14">
+              <span class="text-blue" v-text="reply.userName">回复者</span>
+              <span class="pl-4 pr-4">:</span>
+              <span class="text-blue pr-4">
+                  @{{reply.fromUserName}}
+              </span>
+              <pre v-text="reply.content" class="content dis-i"></pre>
             </div>
             <div class="flex-row row-left pt-8">
-              <span class="text-gray pr-20">2017.08.01 11:48</span>
-              <span class="text-gray-hover flex-row row-left" @click="replayComment(item)"><icon name="reply" class="mr-4"></icon> 回复</span>
+              <span class="text-gray pr-20" v-text="reply.createDate"></span>
+              <span class="text-gray-hover flex-row row-left" @click="openReplyComment(item, reply)"><icon name="reply" class="mr-4"></icon> 回复</span>
             </div>
           </li>
         </ul>
         <comment
-          class="pt-15 pl-20"
-          v-if="item.replay"
-          :avatar-url="'http://f2.topitme.com/2/6a/bc/113109954583dbc6a2o.jpg'"
+          v-if="item.reply"
+          :remove.sync="remove"
+          :default-content="defaultContent"
           @success="saveComment($event, item)"
           @cancel="close(item)"
         ></comment>
@@ -47,7 +52,7 @@
 
 </template>
 <script>
-  import { comment, commentList } from '../services/apiService';
+  import { comment, commentList, reply } from '../services/apiService';
   import { isBlank } from '../../core/utils/string';
   export default {
     props: {
@@ -60,20 +65,79 @@
     data() {
       return {
         list: [],
+        remove: false,
+        replyAgainInfo: null,
+        defaultContent: '',
         loading: false,
+        num: 1,
       };
     },
     created() {
       this.getCommentList();
     },
     methods: {
+      /**
+       * 获取已评论列表
+       */
       async getCommentList() {
-        const list = await commentList.getAwait({ articleId: this.articleId });
-        this.list = this.$zkDate.formatDateList(list, 'createDate');
+        this.list = await commentList.getAwait({ articleId: this.articleId });
       },
-      replayComment(item) {
-        this.$set(item, 'replay', true);
+      /**
+       * 打开回复评论
+       */
+      openReplyComment(item, prevReply) {
+        if (!item.reply || (this.replyAgainInfo && this.replyAgainInfo.id !== prevReply.id)) {
+          this.$set(item, 'reply', true);
+          this.replyAgainInfo = prevReply;
+          this.defaultContent = prevReply ? prevReply.userName : item.name;
+        } else {
+          item.reply = false;
+          this.replyAgainInfo = null;
+        }
       },
+      /**
+       * 添加回复
+       */
+      async addReply(content, item) {
+        const params = {
+          commentId: item.id,
+          userId: this.userId,
+          content,
+        };
+        // 判断是回复评论，还是回复已经回复的评论
+        const prevReplayInfo = this.replyAgainInfo;
+        if (this.replyAgainInfo) {
+          params.fromId = prevReplayInfo.id;
+          params.fromUserId = prevReplayInfo.userId;
+        } else {
+          params.fromId = item.id;
+          params.fromUserId = item.userId;
+        }
+        const newReply = await reply.postAwait(params);
+        this.loading = false;
+        this.remove = true;
+        item.replyList.push(newReply);
+        this.$zkMessage.success('添加回复成功');
+      },
+      /**
+       * 添加评论
+       * @param content 评论内容
+       * @returns {Promise.<void>}
+       */
+      async addComment(content) {
+        const newComment = await comment.postAwait({
+          userId: this.userId,
+          articleId: this.articleId,
+          content,
+        });
+        this.loading = false;
+        this.remove = true;
+        this.list.unshift(newComment);
+        this.$zkMessage.success('添加评论成功');
+      },
+      /**
+       * 保存评论内容
+       */
       async saveComment(val, item) {
         if (isBlank(this.userId)) {
           this.$zkMessage.warning('请先登录');
@@ -82,21 +146,20 @@
         this.loading = true;
         // 添加文章评论
         if (!item) {
-          const newComment = await comment.postAwait({
-            userId: this.userId,
-            articleId: this.articleId,
-            content: val,
-          });
-          this.loading = false;
-          // 格式化时间
-          newComment.createDate = this.$zkDate.formatDate(newComment.createDate);
-          this.list.unshift(newComment);
+          this.addComment(val);
         } else { // 回复评论
-
+          this.addReply(val, item);
         }
       },
+      /**
+       * 关闭评论
+       * @param item
+       */
       close(item) {
-        item.replay = false;
+        this.remove = true;
+        if (item) {
+          item.reply = false;
+        }
       },
     },
     components: {
@@ -116,10 +179,10 @@
       }
     }
   }
-  .replay-list{
+  .reply-list{
     border-left: 2px solid $c-border;
     & > li{
-      margin: 15px 20px 0;
+      margin: 8px 20px 0;
       padding-bottom: 8px;
       padding-top: 8px;
       border-bottom: 1px solid $c-light-border;
@@ -137,6 +200,12 @@
       width: 100%;
       height: 100%;
     }
+  }
+  .reply{
+    line-height: 1.5;
+  }
+  .content{
+    white-space: normal;
   }
   .comment-content{
     padding: 15px 0;

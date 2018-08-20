@@ -1,27 +1,36 @@
 <template>
-  <div>
-    <div class="flex-row col-top">
-      <div class="user-avatar mr-10">
-        <img :src="avatarUrl"/>
+  <transition name="dropdown">
+    <div style="overflow: hidden;">
+      <div class="flex-row col-top mt-15">
+        <div class="user-avatar mr-10" v-if="avatarUrl">
+          <img :src="avatarUrl"/>
+        </div>
+        <div class="flex-1 form-group" :class="{'error': error}">
+          <textarea class="form-control" style="height: 80px; resize: none;" ref="content" placeholder="请输入内容" v-model="content"></textarea>
+          <p class="tip" v-text="tip"></p>
+        </div>
       </div>
-      <div class="flex-1 form-group" :class="{'error': error}">
-        <textarea class="form-control" style="height: 80px; resize: none;" placeholder="请输入内容" v-model="content"></textarea>
-        <p class="tip" v-text="tip"></p>
+      <div class="text-right">
+        <zk-button class="btn btn-default mr-20" @click="cancel">取消</zk-button>
+        <zk-button class="btn btn-blue" @click="save" :loading="loading">保存</zk-button>
       </div>
     </div>
-    <div class="text-right">
-      <zk-button class="btn btn-default mr-20" @click="cancel">取消</zk-button>
-      <zk-button class="btn btn-blue" @click="save" :loading="loading">保存</zk-button>
-    </div>
-  </div>
+  </transition>
 </template>
 <script>
   import { isBlank } from '../../core/utils/string';
   export default {
     props: {
+      defaultContent: {
+        type: String,
+        default: ''
+      },
+      remove: {
+        type: Boolean,
+        required: true
+      },
       avatarUrl: {
         type: String,
-        required: true
       },
       loading: {
         type: Boolean,
@@ -30,10 +39,13 @@
     },
     data() {
       return {
-        content: '',
         error: false,
-        tip: ''
+        tip: '',
+        content: this.getAtName(this.defaultContent),
       };
+    },
+    mounted() {
+      this.inputOnFocus();
     },
     methods: {
       /**
@@ -46,8 +58,14 @@
           this.tip = '请输入内容';
           return;
         }
-        this.$emit('success', this.content);
-        this.content = '';
+        const content = this.content.replace(/^@(.*) /, '');
+        if (isBlank(content)) {
+          this.error = true;
+          this.tip = '请输入内容';
+          return;
+        }
+        this.$emit('success', content);
+        this.updateRemove();
       },
       /**
        * 取消评论，并清空评论内容
@@ -55,15 +73,41 @@
       cancel() {
         if (!isBlank(this.content)) {
           this.$zkConfirm.warning('你确定取消吗？', '提示').then(() => {
-            this.clearAndEmit();
+            this.$emit('cancel');
+            this.updateRemove();
           }).catch(() => {});
         } else {
-          this.clearAndEmit();
+          this.$emit('cancel');
+          this.updateRemove();
         }
       },
-      clearAndEmit() {
-        this.content = '';
-        this.$emit('cancel');
+      updateRemove() {
+        this.$emit('update:remove', false);
+      },
+      getAtName(name) {
+        if (!isBlank(name)) {
+          return `@${name} `;
+        }
+        return name;
+      },
+      inputOnFocus() {
+        const contentEl = this.$refs.content;
+        if (contentEl) {
+          this.$refs.content.focus();
+        }
+      }
+    },
+    watch: {
+      remove(newVal) {
+        if (newVal) {
+          this.content = '';
+        }
+      },
+      defaultContent(newVal) {
+        if (newVal) {
+          this.content = this.getAtName(newVal);
+          this.inputOnFocus();
+        }
       }
     }
   };
@@ -80,5 +124,13 @@
       width: 100%;
       height: 100%;
     }
+  }
+  // 动画过渡
+  .dropdown-enter-active, .dropdown-leave-active {
+    transition: all 0.4s;
+  }
+  .dropdown-enter, .dropdown-leave-to {
+    opacity: 0;
+    transform: translateY(-15px);
   }
 </style>
