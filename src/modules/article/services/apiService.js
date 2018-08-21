@@ -10,3 +10,5 @@ export const comment = zkFetch('/comment');
 export const reply = zkFetch('/comment/reply');
 // 评论列表
 export const commentList = zkFetch('/comment/:articleId/list');
+// 点赞
+export const votes = zkFetch('/article/votes');

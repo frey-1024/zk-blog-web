@@ -19,6 +19,9 @@
       </li>
     </ul>
     <div class="pt-15 markdown-view" v-html="article.html"></div>
+    <div class="flex-row row-center pt-20 pb-20">
+      <zk-button class="btn btn-green btn-md flex-row row-center" :loading="loading" @click="saveVotes"><icon name="thumbs-up" class="mr-4"/> 点赞 | {{article.votes}}</zk-button>
+    </div>
     <comment-list
       :article-id="articleId"
       :user-id="userId"
@@ -28,12 +31,13 @@
 
 <script>
   import { isBlank } from '../../core/utils/string';
-  import { articleById } from '../services/apiService';
+  import { articleById, votes } from '../services/apiService';
   import { mapState } from 'vuex';
   import 'highlight.js/styles/github.css';
   export default {
     data() {
       return {
+        loading: false,
         articleId: this.$route.params.id,
         article: {},
       };
@@ -48,6 +52,17 @@
       this.getArticle();
     },
     methods: {
+      async saveVotes() {
+        this.loading = true;
+        const votesInfo = await votes.postAwait({
+          userId: this.userId,
+          articleId: this.articleId,
+          status: 1,
+        });
+        this.loading = false;
+        this.article.votes = votesInfo.total;
+        this.$zkMessage.success(`已成功${votesInfo.status === 1 ? '点' : '取消'}赞`);
+      },
       async getArticle() {
         if (isBlank(this.articleId)) {
           this.$router.replace({ name: 'home' });
