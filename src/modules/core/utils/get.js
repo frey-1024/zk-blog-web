@@ -31,3 +31,16 @@ export function getWindowSize() {
     height: window.innerHeight
   };
 }
+
+export function getElementPointWithId(id) {
+  let e = document.getElementById(id);
+  e.scrollIntoView(true);
+  let x = e.offsetLeft;
+  let y = e.offsetTop;
+  while (e.offsetParent) {
+    e = e.offsetParent;
+    x += e.offsetLeft;
+    y += e.offsetTop;
+  }
+  return { x, y };
+}

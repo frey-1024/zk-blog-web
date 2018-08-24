@@ -59,16 +59,16 @@
         this.article = await articleById.getAwait({id: this.articleId, type: 'detail'});
       },
       async save() {
-        let articleId, msg;
+        let msg;
         // 编辑
         if (!isBlank(this.articleId)) {
           msg = '编辑成功。';
-          articleId = await article.putAwait(this.article);
+          await article.putAwait(this.article);
         } else { // 添加
           msg = '添加成功。';
-          articleId = await article.postAwait(this.article);
+          await article.postAwait(this.article);
         }
-        this.$router.replace({ name: 'view', params: { id: articleId } });
+        this.$router.replace({ name: 'view', params: { id: this.articleId } });
         this.$zkMessage.success(msg);
       },
       cancel() {

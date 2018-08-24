@@ -1,5 +1,5 @@
 <template>
-  <div class="container pt-15 home-wrapper">
+  <div class="container pt-30 home-wrapper">
     <news-list :data-list="dataList.rows"></news-list>
     <pagination
       v-if="dataList.total && dataList.total > pageSize"
