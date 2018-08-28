@@ -34,7 +34,8 @@ export function getWindowSize() {
 
 export function getElementPointWithId(id) {
   let e = document.getElementById(id);
-  e.scrollIntoView(true);
+  const h = e.offsetHeight;
+  const w = e.offsetWidth;
   let x = e.offsetLeft;
   let y = e.offsetTop;
   while (e.offsetParent) {
@@ -42,5 +43,5 @@ export function getElementPointWithId(id) {
     x += e.offsetLeft;
     y += e.offsetTop;
   }
-  return { x, y };
+  return { x, y, h, w };
 }
