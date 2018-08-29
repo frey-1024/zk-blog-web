@@ -4,19 +4,21 @@
       :votes="article.votes"
       @tool="handleToolByType"
     ></tool-box>
-    <div class="nav-menu-wrapper" ref="navMenuWrapper" v-if="showNavigation">
-      <div class="nav-menu">
-        <h2>目录</h2>
-        <ul class="menu-list">
-          <li v-for="item in navigation" :class="[{ active: item.active }, `nav-item-${item.tagName}`]" @click="scrollToElement(item.id)">
-            <ul>
-              <li v-text="item.content" style="list-style: outside;"></li>
-            </ul>
-          </li>
-        </ul>
+    <transition name="menu">
+      <div class="nav-menu-wrapper" ref="navMenuWrapper" v-if="showNavigation">
+        <div class="nav-menu">
+          <h2>目录</h2>
+          <ul class="menu-list">
+            <li v-for="item in navigation" :class="[{ active: item.active }, `nav-item-${item.tagName}`]" @click="scrollToElement(item.id)">
+              <ul>
+                <li v-text="item.content" style="list-style: outside;"></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
       </div>
-    </div>
-    <div class="flex-1" ref="contentWrapper">
+    </transition>
+    <div class="flex-1 article-detail" ref="contentWrapper">
       <h1 class="article-title fs-30" v-text="article.title"></h1>
       <ul class="flex-row row-left text-gray mt-10 fs-14">
         <li class="flex-row row-left mr-15">
@@ -215,9 +217,16 @@
         // 设置导航列表高度，先执行一次，保证确定设置了。
         const contentEl = this.$refs.contentWrapper;
         this.setMenuHeight(contentEl);
+        let timer = null;
         this.resizeTimer = Resize.on(contentEl, (el) => {
-          this.setMenuHeight(el);
-          this.refreshNavigation();
+          if (timer) {
+            clearTimeout(timer);
+          }
+          // 阻止频繁执行
+          timer = setTimeout(() => {
+            this.setMenuHeight(el);
+            this.refreshNavigation();
+          }, 150);
         }, this);
       },
       /**
@@ -232,12 +241,13 @@
       },
       goEdit() {
         this.$router.push({ name: 'edit', params: { id: this.articleId } });
-      }
+      },
     },
-    destroyed() {
+    beforeDestroy() {
       window.removeEventListener('scroll', this.listenerScroll.bind(this), false);
       if (this.resizeTimer) {
         this.resizeTimer();
+        this.resizeTimer = null;
       }
     },
     components: {
@@ -250,11 +260,16 @@
 <style lang="scss">
   @import "../../core/styles/color";
   @import "../../core/styles/theme/github-markdown";
+  .article-detail{
+    position: relative;
+    z-index: 2;
+    background-color: $c-white;
+  }
   .edit{
     color: $c-green;
     cursor: pointer;
     &:hover{
-      color: #348FEE;
+      color: $c-blue;
     }
   }
 
@@ -267,17 +282,19 @@
     }
   }
   .nav-menu-wrapper{
-    width: 300px;
     padding-top: 60px;
     padding-right: 20px;
+    width: 300px;
+    position: relative;
+    z-index: 1;
     .nav-menu{
       position: sticky;
       top: 15px;
       border-right: 1px solid $c-border;
+      width: 280px;
     }
     .menu-list{
       font-size: 14px;
-      width: 100%;
       line-height: 1.5;
       @include generateH();
       & > li {
@@ -299,5 +316,16 @@
         }
       }
     }
+  }
+
+  // 动画过渡
+  .menu-enter-active, .menu-leave-active {
+    transition: all 0.5s;
+  }
+  .menu-enter, .menu-leave-to {
+    opacity: 0;
+    transform: translateX(-20px);
+    width: 0;
+    padding-right: 0;
   }
 </style>

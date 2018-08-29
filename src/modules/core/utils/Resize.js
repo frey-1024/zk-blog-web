@@ -83,7 +83,9 @@ class Resize {
     }
   }
   _removeListener(el, listener, index) {
-    listener.eventObj.contentDocument.defaultView.removeEventListener('resize', this._handleResize);
+    if (listener.eventObj.contentDocument) {
+      listener.eventObj.contentDocument.defaultView.removeEventListener('resize', this._handleResize);
+    }
     el.removeChild(listener.eventObj);
     this.listeners.splice(index, 1);
   }
@@ -93,12 +95,15 @@ class Resize {
       el.style.position = 'relative';
     }
     // 返回清除函数，执行清除监听
-    return (el, handler, context) => {
+    return () => {
       this.off(el, handler, context);
     };
   };
   off(el, handler, context) {
     const { listener, index } = this._findPrevListener(el);
+    if (!listener) {
+      return;
+    }
     const handlers = listener.handlers;
     // 当没有指定清除哪个具体函数， 就是清除当前元素所以监听事件
     if (!handler || !handlers.length) {
