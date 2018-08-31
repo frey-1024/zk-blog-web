@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import homeRouter from '../../home/router';
-import securityRouter from '../../security/router';
+import securityRouter from '../../profile/router';
 import articleRouter from '../../article/router';
 
 Vue.use(Router);

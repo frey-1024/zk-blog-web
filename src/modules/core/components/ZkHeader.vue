@@ -11,8 +11,8 @@
           </li>
         </ul>
         <ul class="flex-row row-right nav-user" v-if="!isLogin">
-          <li><zk-button class="btn btn-default" @click="go('register')">注册</zk-button></li>
-          <li><zk-button class="btn btn-blue" @click="go('login')">登录</zk-button></li>
+          <li><zk-button class="btn btn-default" @click="openRegister">注册</zk-button></li>
+          <li><zk-button class="btn btn-blue" @click="openLogin">登录</zk-button></li>
         </ul>
         <ul class="flex-row row-right nav-user" v-if="isLogin">
           <li class="flex-row">
@@ -103,6 +103,16 @@
       },
       go(name) {
         this.$router.push({ name });
+      },
+      openLogin() {
+        this.$zkLogin().then((data) => {
+          this.$store.commit(`user/${SET_STATE}`, data);
+        });
+      },
+      openRegister() {
+        this.$zkRegister().then((data) => {
+          this.$store.commit(`user/${SET_STATE}`, data);
+        });
       },
       logout() {
         this.$zkConfirm.warning('你确定退出登录吗？', '提示').then(() => {

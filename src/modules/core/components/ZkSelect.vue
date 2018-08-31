@@ -1,8 +1,12 @@
 <template>
-  <section class="zk-select" :style="{ width: width }">
-    <div class="form-control flex-row" @click.stop="changeShow">
-      <input type="text" v-model="value.label" readonly="readonly" :placeholder="placeholder" autocomplete="off"/>
-      <icon name="chevron-down" class="text-gray zk-dropdown-icon" :class="{'active': showOptions}"></icon>
+  <div class="zk-select" :style="{ width: width }">
+    <div class="form-group" @click.stop="changeShow" :class="{'error': error}">
+      <label class="form-label" v-if="label">{{label}} <sup v-if="sup">{{sup}}</sup></label>
+      <div class="has-icon">
+        <input type="text" class="form-control" v-model="value.label" readonly="readonly" :placeholder="placeholder" autocomplete="off"/>
+        <icon name="chevron-down" class="right-input-icon text-gray zk-dropdown-icon" :class="{'active': showOptions}"></icon>
+      </div>
+      <p class="tip" v-text="errorTip"></p>
     </div>
     <transition name="dropdown">
       <div class="zk-select-dropdown" v-show="showOptions">
@@ -19,7 +23,7 @@
         </div>
       </div>
     </transition>
-  </section>
+  </div>
 </template>
 <script>
   export default {
@@ -28,6 +32,18 @@
       placeholder: {
         type: String,
         default: '请选择'
+      },
+      sup: {
+        type: String,
+      },
+      label: {
+        type: String,
+      },
+      error: {
+        type: Boolean,
+      },
+      errorTip: {
+        type: String
       },
       options: {
         type: Array,
@@ -70,7 +86,6 @@
 <style lang="scss">
   @import "../styles/color";
   .zk-select{
-    width: 240px;
     position: relative;
   }
   .zk-select-dropdown{
@@ -80,8 +95,9 @@
     position: absolute;
     top: 100%;
     left: 0;
+    z-index: 2;
     background-color: transparent;
-    padding: 10px;
+    padding:  0 10px;
     margin-left: -10px;
     &:before, &:after{
       content: '';
@@ -109,7 +125,8 @@
     border: 1px solid $c-border;
     border-radius: 4px;
     background-color: $c-white;
-    box-shadow: 0 2px 12px 0 rgba($c-black,.1);
+    box-shadow: 0 2px 12px 0 rgba($c-black,.2);
+    margin: 10px 0;
   }
   .zk-options{
     height: 100%;
@@ -117,22 +134,25 @@
     margin-bottom: -17px;
     margin-right: -17px;
     padding: 8px 0;
+    color: $c-text;
     & > li{
       padding: 0 20px;
       position: relative;
-      color: $c-light-text;
       height: 34px;
       line-height: 34px;
       cursor: pointer;
       &:hover{
         background-color: $c-light-gray;
+        color: $c-green;
       }
     }
   }
   .zk-dropdown-icon{
-    transition: all 0.6s;
+    transition: all 0.3s;
+    transform-origin:50% 50%;
+    transform: translateY(-50%) rotate(0deg);
     &.active{
-      transform: rotate(-180deg);
+      transform: translateY(-50%) rotate(-180deg);
     }
   }
   // 动画过渡
@@ -142,6 +162,5 @@
   }
   .dropdown-enter, .dropdown-leave-to {
     max-height: 0;
-    opacity: 0.6;
   }
 </style>

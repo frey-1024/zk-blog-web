@@ -21,6 +21,9 @@
     padding-bottom: 4px;
     display: block;
     color: $c-text;
+    sup{
+      color: $c-red;
+    }
   }
   .form-control{
     -webkit-appearance: none;
@@ -34,6 +37,12 @@
     &:focus{
       box-shadow: 0 0 4px rgba($c-blue, 0.8);
       border-color: rgba($c-blue, 0.8);
+    }
+  }
+  .has-icon{
+    position: relative;
+    .form-control{
+      cursor: pointer;
     }
   }
   .tip{
@@ -54,6 +63,25 @@
       display: block;
     }
   }
+  .right-input-icon{
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
 }
-
+.upload-file{
+  position: relative;
+  input[type="file"]{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    opacity: 0;
+    font-size: 0;
+    cursor: inherit;
+  }
+}
 

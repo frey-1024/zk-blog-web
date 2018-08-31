@@ -64,7 +64,6 @@
       }
     },
     components: {
-      ZkModal: () => import('../../../components/ZkModal.vue')
     },
   };
 </script>

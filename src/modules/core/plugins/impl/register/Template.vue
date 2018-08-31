@@ -1,28 +1,35 @@
 <template>
-  <section class="form login-wrapper">
-    <div class="form-title">注册</div>
-    <zk-jitter :start.sync="error.nameJitter" class="form-group" :class="{'error': error.name}">
-      <label class="form-label">账号</label>
-      <input class="form-control" v-model="user.name" type="text" placeholder="账号"/>
-      <p class="tip" v-text="error.nameTip"></p>
-    </zk-jitter>
-    <zk-jitter :start.sync="error.pwdJitter" class="form-group" :class="{'error': error.pwd}">
-      <label class="form-label">密码</label>
-      <input class="form-control" v-model="user.pwd" type="password" placeholder="密码"/>
-      <p class="tip" v-text="error.pwdTip"></p>
-    </zk-jitter>
-    <zk-button @click="register" class="btn btn-blue btn-md w-100 mt-10">注册</zk-button>
-  </section>
+  <zk-modal size="xs" :visible.sync="openModal">
+    <span slot="title">注册</span>
+    <slot slot="body">
+      <zk-jitter :start.sync="error.nameJitter" class="form-group" :class="{'error': error.name}">
+        <label class="form-label">账号</label>
+        <input class="form-control" v-model="user.name" type="text" placeholder="账号"/>
+        <p class="tip" v-text="error.nameTip"></p>
+      </zk-jitter>
+      <zk-jitter :start.sync="error.pwdJitter" class="form-group" :class="{'error': error.pwd}">
+        <label class="form-label">密码</label>
+        <input class="form-control" v-model="user.pwd" type="password" placeholder="密码"/>
+        <p class="tip" v-text="error.pwdTip"></p>
+      </zk-jitter>
+    </slot>
+    <slot slot="footer">
+      <zk-button class="btn btn-default" @click="close">取消</zk-button>
+      <zk-button @click="register" class="btn btn-blue">注册</zk-button>
+    </slot>
+  </zk-modal>
 </template>
 
 <script>
   import md5 from 'blueimp-md5';
-  import { isBlank } from '../../core/utils/string';
-  import { register } from '../services/apiService';
-  import { SET_STATE } from '../../core/stores/mutationTypes';
+  import { isBlank } from '../../../utils/string';
+  import { register } from '../../../../profile/services/apiService';
   export default {
     data() {
       return {
+        openModal: false,
+        resolve: null,
+        reject: null,
         error: {
           name: false,
           nameJitter: false,
@@ -71,13 +78,23 @@
         });
         if (data) {
           this.$zkMessage.success('注册成功。');
-          this.$store.commit(`user/${SET_STATE}`, data);
-          this.$router.replace({name: 'home'});
+          this.resolve(data);
+          this.close();
         }
       },
+      open() {
+        this.openModal = true;
+        return new Promise((resolve, reject) => {
+          this.resolve = resolve;
+          this.reject = reject;
+        });
+      },
+      close() {
+        this.openModal = false;
+      }
     },
     components: {
-      ZkJitter: () => import('../../core/components/ZkJitter.vue'),
+      ZkJitter: () => import('../../../components/ZkJitter.vue'),
     }
   };
 </script>

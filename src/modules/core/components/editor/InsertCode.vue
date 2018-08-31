@@ -54,7 +54,6 @@
       }
     },
     components: {
-      ZkModal: () => import('../ZkModal.vue'),
       ZkSelect: () => import('../ZkSelect.vue'),
     },
     watch: {

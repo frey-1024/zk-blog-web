@@ -1,7 +1,9 @@
 <template>
   <div>
-    <zk-cover v-show="showCover"></zk-cover>
-    <transition name="shrink" @after-leave="afterLeave" @before-enter="beforeEnter">
+    <transition name="cover">
+      <div class="zk-cover" v-show="visible"></div>
+    </transition>
+    <transition name="shrink">
       <div class="zk-modal-wrapper" v-show="visible">
         <div class="zk-modal" :class="size">
           <div class="zk-modal-title flex-row fs-18">
@@ -21,6 +23,7 @@
 </template>
 
 <script>
+  import ZkCover from './ZkCover.vue';
   export default {
     props: {
       size: {
@@ -33,36 +36,37 @@
       }
     },
     data() {
-      return {
-        showCover: false,
-      };
+      return {};
     },
     methods: {
       close() {
         this.$emit('update:visible', false);
       },
-      beforeEnter() {
-        this.showCover = true;
-      },
-      afterLeave() {
-        this.showCover = false;
-      },
     },
     components: {
-      ZkCover: () => import('./ZkCover.vue'),
+      ZkCover,
     }
   };
 </script>
 
 <style lang="scss">
   @import "../styles/color";
+  .zk-cover{
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 99;
+    background-color: rgba($c-black, 0.4);
+  }
   .zk-modal-wrapper{
     position: fixed;
     left: 0;
     top: 0;
     right: 0;
     bottom: 0;
-    z-index: 99999;
+    z-index: 100;
     background-color: transparent;
   }
 
@@ -101,6 +105,15 @@
       width: 420px;
     }
   }
+
+  // 动画过渡
+  .cover-enter-active, .cover-leave-active {
+    transition: all .6s;
+  }
+  .cover-enter, .cover-leave-to {
+    opacity: 0;
+  }
+
   // 动画过渡
   .shrink-enter-active, .shrink-leave-active {
     transition: all .5s;
