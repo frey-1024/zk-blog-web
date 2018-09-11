@@ -69,6 +69,7 @@ function handleAwait(method, ...args) {
       return data.data;
     }
     showMessage(data.msg || '接口请求错误。');
+    return 'e';
   }).catch((e) => {
     showMessage(e.msg || '接口请求错误。');
   });

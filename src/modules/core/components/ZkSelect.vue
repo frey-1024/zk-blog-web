@@ -1,8 +1,8 @@
 <template>
   <div class="zk-select" :style="{ width: width }">
-    <div class="form-group" @click.stop="changeShow" :class="{'error': error}">
+    <div class="form-group" :class="{'error': error}">
       <label class="form-label" v-if="label">{{label}} <sup v-if="sup">{{sup}}</sup></label>
-      <div class="has-icon">
+      <div class="has-icon" @click.stop="changeShow">
         <input type="text" class="form-control" v-model="value.label" readonly="readonly" :placeholder="placeholder" autocomplete="off"/>
         <icon name="chevron-down" class="right-input-icon text-gray zk-dropdown-icon" :class="{'active': showOptions}"></icon>
       </div>

@@ -10,7 +10,7 @@
           <span class="pl-10" v-text="item.text"></span>
         </li>
       </ul>
-      <div class="flex-1 pl-20">
+      <div class="flex-1 pl-30">
         <router-view/>
       </div>
     </div>
@@ -25,6 +25,10 @@
           name: 'basic',
           text: '基本信息',
           icon: 'sliders-h'
+        }, {
+          name: 'resetPwd',
+          text: '重置密码',
+          icon: 'cogs'
         }],
       };
     },
@@ -44,7 +48,7 @@
       min-width: 200px;
       li{
         cursor: pointer;
-        padding: 8px 15px;
+        padding: 10px 15px;
         &:hover, &.active{
           background-color: $c-light-border;
         }

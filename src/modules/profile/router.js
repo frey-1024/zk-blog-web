@@ -7,5 +7,9 @@ export default [{
     name: 'basic',
     path: 'basic',
     component: () => import('./pages/Basic.vue')
+  }, {
+    name: 'resetPwd',
+    path: 'reset/pwd',
+    component: () => import('./pages/ResetPwd.vue')
   }]
 }];
