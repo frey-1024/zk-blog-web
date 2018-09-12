@@ -41,15 +41,17 @@
       };
     },
     mounted() {
-      // 如果要执行 z 轴动画需要设置父级，从而修改子级透视效果，否则 Z 轴没有效果
-      if (this.range.z > 0) {
-        const parentEl = this.$el.parentNode;
-        Object.keys(this.perspectiveStyle).forEach((key) => {
-          parentEl.style[key] = this.perspectiveStyle[key];
-        });
-      }
     },
     methods: {
+      changeParentStyle(isDelete) {
+        // 如果要执行 z 轴动画需要设置父级，从而修改子级透视效果，否则 Z 轴没有效果
+        if (this.range.z > 0) {
+          const parentEl = this.$el.parentNode;
+          Object.keys(this.perspectiveStyle).forEach((key) => {
+            parentEl.style[key] = isDelete ? '' : this.perspectiveStyle[key];
+          });
+        }
+      },
       /**
        * 获取需要操作的的项 和 每次需要摆动的量
        */
@@ -127,6 +129,7 @@
               // 停止在起始点上
               this.jitterView({ x: 0, y: 0, z: 0 });
               // 清除动画
+              this.changeParentStyle(true);
               this.clearAnimate();
               return;
             }
@@ -170,6 +173,7 @@
       start(newVal) {
         // 开始抖动
         if (newVal) {
+          this.changeParentStyle();
           this.initJitter();
         }
       }

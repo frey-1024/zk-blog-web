@@ -4,7 +4,7 @@
       <label class="form-label" v-if="label">{{label}} <sup v-if="sup">{{sup}}</sup></label>
       <div class="has-icon" @click.stop="changeShow">
         <input type="text" class="form-control" v-model="value.label" readonly="readonly" :placeholder="placeholder" autocomplete="off"/>
-        <icon name="chevron-down" class="right-input-icon text-gray zk-dropdown-icon" :class="{'active': showOptions}"></icon>
+        <icon name="chevron-down" class="right-input-icon dropdown text-gray" :class="{'active': showOptions}"></icon>
       </div>
       <p class="tip" v-text="errorTip"></p>
     </div>
@@ -145,14 +145,6 @@
         background-color: $c-light-gray;
         color: $c-green;
       }
-    }
-  }
-  .zk-dropdown-icon{
-    transition: all 0.3s;
-    transform-origin:50% 50%;
-    transform: translateY(-50%) rotate(0deg);
-    &.active{
-      transform: translateY(-50%) rotate(-180deg);
     }
   }
   // 动画过渡

@@ -30,6 +30,14 @@
         :options="options">
       </zk-select>
     </zk-jitter>
+    <zk-date-picker
+      :visible="showDatePicker"
+      :date="date"
+      :min-date="minDate"
+      :max-date="maxDate"
+      @confirm="confirm"
+      @cancel="cancel"
+    ></zk-date-picker>
     <div class="text-center">
       <zk-button @click="save" class="btn btn-blue btn-md">保存</zk-button>
     </div>
@@ -60,9 +68,23 @@
           value: 2,
           label: '女性',
         }],
+        date: '2017-09-11',
+        minDate: '2000-09-11',
+        maxDate: '2020-09-11',
+        showDatePicker: false,
       };
     },
     methods: {
+      openDatePicker() {
+        this.showDatePicker = true;
+      },
+      confirm(value) {
+        this.showDatePicker = false;
+        console.log(value);
+      },
+      cancel() {
+        this.showDatePicker = false;
+      },
       setErrorStatus(key, status = false, text = '') {
         this.error[key] = status;
         this.error[`${key}Jitter`] = status;
@@ -86,6 +108,7 @@
         return true;
       },
       save() {
+        this.openDatePicker();
         if (!this.validate()) {
           return;
         }
@@ -95,6 +118,7 @@
     components: {
       ZkJitter: () => import('../../core/components/ZkJitter.vue'),
       ZkSelect: () => import('../../core/components/ZkSelect.vue'),
+      ZkDatePicker: () => import('../../core/components/ZkDatePicker.vue'),
     }
   };
 </script>
