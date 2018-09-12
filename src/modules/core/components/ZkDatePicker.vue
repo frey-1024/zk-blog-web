@@ -60,7 +60,7 @@
 </template>
 <script>
   import ZkEmptyModal from './ZkEmptyModal.vue';
-  import ZkButton from './ZkButton.vue'
+  import ZkButton from './ZkButton.vue';
   // 阿拉伯数字 转 汉字数字的基本库
   const weekJson = {
     1: '星期一',
