@@ -3,8 +3,8 @@
     <div class="form-group" :class="{'error': error}">
       <label class="form-label" v-if="label">{{label}} <sup v-if="sup">{{sup}}</sup></label>
       <div class="has-icon" @click.stop="changeShow">
-        <input type="text" class="form-control" v-model="value.label" readonly="readonly" :placeholder="placeholder" autocomplete="off"/>
-        <icon name="chevron-down" class="right-input-icon dropdown text-gray" :class="{'active': showOptions}"></icon>
+        <input type="text" class="form-control" v-model="selectLabel" readonly="readonly" :placeholder="placeholder" autocomplete="off"/>
+        <icon name="chevron-down" class="right-input-icon drapdown text-gray" :class="{'active': showOptions}"></icon>
       </div>
       <p class="tip" v-text="errorTip"></p>
     </div>
@@ -15,7 +15,7 @@
             <li
               v-for="item in options"
               :key="item.value"
-              :class="{'active': item.value === value.value}"
+              :class="{'active': item.value === value}"
               @click.stop="selectItem(item)">
               {{item.label}}
             </li>
@@ -54,7 +54,6 @@
         default: '240px'
       },
       value: {
-        type: Object,
         required: true,
       }
     },
@@ -62,6 +61,18 @@
       return {
         showOptions: false,
       };
+    },
+    computed: {
+      selectLabel() {
+        const opts = this.options;
+        const selectedVal = this.value;
+        for (let i = 0, l = opts.length, opt; i < l; i++) {
+          opt = opts[i];
+          if (selectedVal === opt.value) {
+            return opt.label;
+          }
+        }
+      }
     },
     mounted() {
       window.addEventListener('click', this.hideOptions, false);
@@ -72,7 +83,7 @@
       },
       selectItem(item) {
         this.hideOptions();
-        this.$emit('input', item);
+        this.$emit('input', item.value);
       },
       hideOptions() {
         this.showOptions = false;

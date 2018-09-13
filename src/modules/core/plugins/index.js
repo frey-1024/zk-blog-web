@@ -3,6 +3,7 @@ import Confirm from './impl/confirm/install';
 import Format from './impl/format/install';
 import Login from './impl/login/install';
 import Register from './impl/register/install';
+import DatePicker from './impl/datePicker/install';
 
 export function addGlobalPlugins(vm, options) {
   // 提示
@@ -21,4 +22,6 @@ export function addGlobalPlugins(vm, options) {
   vm.use(Login);
   // 注册
   vm.use(Register);
+  // 日期选择器
+  vm.use(DatePicker, {});
 }

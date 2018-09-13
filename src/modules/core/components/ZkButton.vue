@@ -1,9 +1,10 @@
 <template>
-  <button class="zk-btn" :class="{'disabled': loading}">
+  <!--这里Firefox和IE9+ 不支持button子元素canvas所绑定事件， 所以用div-->
+  <div class="zk-btn" :class="{'disabled': loading}">
     <canvas class="zk-ripple" @click="ripple"></canvas>
     <slot></slot>
     <icon name="spinner" pulse v-if="loading" class="pull-right ml-4"></icon>
-  </button>
+  </div>
 </template>
 
 <script>
@@ -115,7 +116,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      z-index: 999;
+      z-index: 1;
     }
   }
 </style>

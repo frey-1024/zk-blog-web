@@ -14,10 +14,10 @@
   }
 }
 .form-group{
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   .form-label{
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 600;
     padding-bottom: 4px;
     display: block;
     color: $c-text;
@@ -38,6 +38,9 @@
       box-shadow: 0 0 4px rgba($c-blue, 0.8);
       border-color: rgba($c-blue, 0.8);
     }
+    &.pointer{
+      cursor: pointer;
+    }
   }
   .has-icon{
     position: relative;
@@ -49,6 +52,7 @@
     display: none;
     font-size: 12px;
     padding-top: 6px;
+    margin-bottom: -20px;
   }
   &.error{
     .form-control{
@@ -68,7 +72,7 @@
     right: 10px;
     top: 50%;
     transform: translateY(-50%);
-    .drapdown{
+    &.drapdown{
       transition: all 0.3s;
       transform-origin:50% 50%;
       transform: translateY(-50%) rotate(0deg);
