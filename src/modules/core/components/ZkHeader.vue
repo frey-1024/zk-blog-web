@@ -4,7 +4,7 @@
       <div class="flex-row nav">
         <ul class="nav-list flex-row row-left">
           <li @click="goView(navs[0])">
-            <img class="logo" src="../../../assets/logo.png"/>
+            <img class="logo" src="../../../assets/logo.jpg"/>
           </li>
           <li v-for="item in navs">
             <a href="javascript:;" @click="goView(item)" :class="{'active': pathName === item.pathName}">{{item.text}}</a>
@@ -42,7 +42,7 @@
           <icon name="search"></icon>
         </li>
         <li class="flex-2 flex-row row-center">
-          <img class="logo" src="../../../assets/logo.png"/>
+          <img class="logo" src="../../../assets/logo.jpg"/>
         </li>
         <li class="flex-1 flex-row row-right text-gray">
           <icon name="cog"></icon>
