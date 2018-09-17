@@ -1,5 +1,5 @@
 <template>
-  <div class="container pt-30 home-wrapper">
+  <div class="container pt-30 home-wrapper" v-loading.before="loading">
     <news-list :data-list="dataList.rows"></news-list>
     <pagination
       v-if="dataList.total && dataList.total > pageSize"
@@ -22,7 +22,8 @@
         currentPage: 1,
         dataList: {
           rows: [],
-        }
+        },
+        loading: false,
       };
     },
     mounted() {
@@ -33,10 +34,12 @@
         this.getArticleList();
       },
       async getArticleList() {
+        this.loading = true;
         this.dataList = await articleList.postAwait({
           currentPage: this.currentPage,
           pageSize: this.pageSize
         });
+        this.loading = false;
       }
     },
     components: {

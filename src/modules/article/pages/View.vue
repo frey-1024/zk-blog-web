@@ -34,9 +34,9 @@
         </li>
       </ul>
       <p class="fs-14 pt-30" v-text="article.excerpt"></p>
-      <div class="pt-15 markdown-body" v-html="article.html" ref="content"></div>
+      <div class="pt-15 markdown-body" v-html="article.html" v-loading="loading" ref="content"></div>
       <div class="flex-row row-center pt-20 pb-20">
-        <zk-button class="btn btn-green btn-md flex-row row-center" :loading="loading" @click="saveVotes"><icon name="thumbs-up" class="mr-4"/> 点赞 | {{article.votes}}</zk-button>
+        <zk-button class="btn btn-green btn-md flex-row row-center" :loading="saving" @click="saveVotes"><icon name="thumbs-up" class="mr-4"/> 点赞 | {{article.votes}}</zk-button>
       </div>
       <comment-list
         id="comment"
@@ -58,6 +58,7 @@
     data() {
       return {
         loading: false,
+        saving: false,
         articleId: this.$route.params.id,
         article: {
           votes: 0,
@@ -73,10 +74,8 @@
         userId: state => state.id,
       })
     },
-    created() {
-      this.getArticle();
-    },
     mounted() {
+      this.getArticle();
     },
     methods: {
       /**
@@ -88,7 +87,9 @@
           this.$router.replace({name: 'home'});
           return;
         }
+        this.loading = true;
         this.article = await articleById.getAwait({id: this.articleId, type: 'content'});
+        this.loading = false;
         // 获取文章导航列表
         this.getArticleNavigation();
       },
@@ -153,16 +154,16 @@
        * 保存/取消 点赞
        */
       async saveVotes() {
-        if (this.loading) {
+        if (this.saving) {
           return;
         }
-        this.loading = true;
+        this.saving = true;
         const votesInfo = await votes.postAwait({
           userId: this.userId,
           articleId: this.articleId,
           status: 1,
         });
-        this.loading = false;
+        this.saving = false;
         // 更新点赞数值
         this.article.votes = votesInfo.total;
         // 根据不同状态，弹出不同提示信息
@@ -317,7 +318,11 @@
       }
     }
   }
-
+  .markdown-body{
+    li{
+      list-style: decimal;
+    }
+  }
   // 动画过渡
   .menu-enter-active, .menu-leave-active {
     transition: all 0.5s;

@@ -97,3 +97,6 @@
   }
 }
 
+.form-control[disabled="disabled"] {
+  cursor: not-allowed;
+}
