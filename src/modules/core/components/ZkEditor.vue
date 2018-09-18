@@ -4,7 +4,7 @@
       <ul class="zk-editor-menu flex-row row-left">
         <li v-for="item in utils" class="flex-row">
           <a class="flex-row row-center" :class="{ 'active': !item.unselect && item.active }" @click.stop="selectUtil(item)" href="javascript:;">
-            <icon :name="item.icon"></icon>
+            <i :class="`fa fa-${item.icon}`"></i>
           </a>
           <span class="zk-editor-menu-separator" v-if="item.separator">|</span>
           <!--下拉选择框-->
@@ -20,7 +20,7 @@
       <ul class="zk-editor-menu flex-row row-right">
         <li v-for="item in editorMode" class="flex-row">
           <a class="flex-row row-center" :class="{ 'active': !item.unselect && item.active }" @click.stop="selectModeUtil(item)" href="javascript:;">
-            <icon :name="item.icon"></icon>
+            <i :class="`fa fa-${item.icon}`"></i>
           </a>
           <span class="zk-editor-utils-separator" v-if="item.separator">|</span>
         </li>

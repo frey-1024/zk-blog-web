@@ -5,15 +5,15 @@
       <p class="article-excerpt" v-text="item.excerpt"></p>
       <ul class="operations flex-row row-left text-gray mt-10">
         <li class="flex-row row-left mr-15">
-          <icon name="thumbs-up" class="mr-4"/>
+          <i class="fa fa-thumbs-up mr-4"></i>
           赞（<span v-text="item.votes"></span>）
         </li>
         <li class="flex-row row-left mr-15">
-          <icon name="eye" class="mr-4"/>
+          <i class="fa fa-eye mr-4"></i>
           阅读（<span v-text="item.previewCount"></span>）
         </li>
         <li class="flex-row row-left mr-15">
-          <icon name="calendar-alt" class="mr-4"/>
+          <i class="fa fa-calendar mr-4"></i>
           发布于（<span v-text="item.updateDate"></span>）
         </li>
       </ul>

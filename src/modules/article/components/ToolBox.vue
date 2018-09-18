@@ -1,8 +1,8 @@
 <template>
   <ul class="tool-list">
-    <li v-for="item in fontList" class="text-gray-hover flex-col row-center" @click="triggerTool(item)">
-      <span class="pb-4 text-center" v-text="votes" v-if="item.isShowNumber"></span>
-      <icon :name="item.name" scale="1.5"/>
+    <li v-for="item in fontList" class="text-gray-hover flex-col row-center text-center" @click="triggerTool(item)">
+      <span class="pb-4" v-text="votes" v-if="item.isShowNumber"></span>
+      <i :class="`fa fa-lg fa-${item.name}`"></i>
     </li>
   </ul>
 </template>
@@ -22,7 +22,7 @@
           isShowNumber: true,
         }, {
           type: 'comment',
-          name: 'comment-alt',
+          name: 'comment',
         }, {
           type: 'menu',
           name: 'list-ul',

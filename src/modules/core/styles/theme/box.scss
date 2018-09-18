@@ -1,4 +1,4 @@
-$values: (2) (4) (8) (10) (15) (20) (25) (30) (40) (50);
+$values: (0) (2) (4) (8) (10) (15) (20) (25) (30) (40) (50);
 @mixin generateBox($list){
   @each $m in $list{
     $type:nth($m, 1);

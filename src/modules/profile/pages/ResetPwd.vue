@@ -90,7 +90,4 @@
 </script>
 <style lang="scss">
   @import "../../core/styles/color";
-  .form-group{
-    margin-bottom: 20px;
-  }
 </style>

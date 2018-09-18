@@ -22,11 +22,11 @@
       <h1 class="article-title fs-30" v-text="article.title"></h1>
       <ul class="flex-row row-left text-gray mt-10 fs-14">
         <li class="flex-row row-left mr-15">
-          <icon name="eye" class="mr-4"/>
+          <i class="fa fa-eye mr-4"></i>
           阅读（<span v-text="article.previewCount"></span>）
         </li>
         <li class="flex-row row-left mr-15">
-          <icon name="calendar-alt" class="mr-4"/>
+          <i class="fa fa-calendar mr-4"></i>
           发布于（<span v-text="article.updateDate"></span>）
         </li>
         <li class="edit" @click="goEdit" v-if="isLogin">
@@ -36,7 +36,9 @@
       <p class="fs-14 pt-30" v-text="article.excerpt"></p>
       <div class="pt-15 markdown-body" v-html="article.html" v-loading="loading" ref="content"></div>
       <div class="flex-row row-center pt-20 pb-20">
-        <zk-button class="btn btn-green btn-md flex-row row-center" :loading="saving" @click="saveVotes"><icon name="thumbs-up" class="mr-4"/> 点赞 | {{article.votes}}</zk-button>
+        <zk-button class="btn btn-green btn-md flex-row row-center" :loading="saving" @click="saveVotes">
+          <i class="fa fa-thumbs-up mr-4"></i> 点赞 | <span v-text="article.votes"></span>
+        </zk-button>
       </div>
       <comment-list
         id="comment"
@@ -155,6 +157,10 @@
        */
       async saveVotes() {
         if (this.saving) {
+          return;
+        }
+        if (!this.isLogin) {
+          this.$zkMessage.warning('请先登录');
           return;
         }
         this.saving = true;

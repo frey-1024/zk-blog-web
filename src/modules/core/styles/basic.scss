@@ -37,7 +37,6 @@ img{
   height: 100%;
 }
 
-@import "./theme/box";
 @import "./theme/flex";
 @import "./theme/fontSize";
 @import "./theme/text";
@@ -47,3 +46,4 @@ img{
 @import "theme/transition";
 @import "theme/dropdown";
 @import "theme/badge";
+@import "./theme/box";

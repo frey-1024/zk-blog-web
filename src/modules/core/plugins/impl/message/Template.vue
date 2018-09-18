@@ -2,10 +2,10 @@
   <transition name="fade">
     <div class="zk-message-wrapper flex-row fs-16" :class="`zk-message ${options.type}`" v-show="show">
       <div class="flex-row row-left row-center">
-        <icon :name="typeIcon"></icon>
+        <i :class="`fa fa-${typeIcon}`"></i>
         <div class="pl-10" v-html="options.tip"></div>
       </div>
-      <span class="text-gray flex-row pointer" @click="close" v-if="options.showClose"><icon name="times"></icon></span>
+      <span class="text-gray flex-row pointer" @click="close" v-if="options.showClose"><i class="fa fa-times"></i></span>
     </div>
   </transition>
 </template>

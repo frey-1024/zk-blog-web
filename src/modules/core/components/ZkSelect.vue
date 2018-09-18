@@ -4,7 +4,7 @@
       <label class="form-label" v-if="label">{{label}} <sup v-if="sup">{{sup}}</sup></label>
       <div class="has-icon" @click.stop="changeShow">
         <input type="text" class="form-control" v-model="selectLabel" readonly="readonly" :placeholder="placeholder" autocomplete="off"/>
-        <icon name="chevron-down" class="right-input-icon drapdown text-gray" :class="{'active': showOptions}"></icon>
+        <i class="fa fa-chevron-down right-input-icon drapdown text-gray" :class="{'active': showOptions}"></i>
       </div>
       <p class="tip" v-text="errorTip"></p>
     </div>

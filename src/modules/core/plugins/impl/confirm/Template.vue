@@ -3,7 +3,7 @@
     <span slot="title" v-html="options.title"></span>
     <slot slot="body">
       <div class="flex-row row-left pt-10 pb-10 fs-14">
-        <icon :name="typeIcon" class="zk-confirm-icon" :class="options.type"></icon>
+        <i class="zk-confirm-icon fa" :class="`${options.type} fa-${typeIcon}`"></i>
         <div v-html="options.tip"></div>
       </div>
     </slot>

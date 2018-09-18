@@ -3,7 +3,7 @@
     <div class="zk-modal" :class="size">
       <div class="zk-modal-title flex-row fs-18">
         <slot name="title"></slot>
-        <span @click.stop="close" class="flex-row row-center"><icon name="times" class="text-gray hover-blue pointer"></icon></span>
+        <span @click.stop="close" class="flex-row row-center"><i class="fa fa-times text-gray hover-blue pointer"></i></span>
       </div>
       <div class="zk-modal-body">
         <slot name="body"></slot>

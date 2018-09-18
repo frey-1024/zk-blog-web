@@ -33,7 +33,7 @@
     border: 1px solid $c-border;
     border-radius: 4px;
     font-size: 14px;
-    transition: border-color,box-shadow .3s;
+    transition: all .3s;
     &:focus{
       box-shadow: 0 0 4px rgba($c-blue, 0.8);
       border-color: rgba($c-blue, 0.8);
@@ -45,7 +45,7 @@
   .has-icon{
     position: relative;
     .form-control{
-      cursor: pointer;
+      padding-right: 30px;
     }
   }
   .tip{
@@ -99,4 +99,17 @@
 
 .form-control[disabled="disabled"] {
   cursor: not-allowed;
+}
+
+::-webkit-input-placeholder {
+  color: $c-gray;
+}
+:-moz-placeholder {
+  color: $c-gray;
+}
+::-moz-placeholder {
+  color: $c-gray;
+}
+:-ms-input-placeholder {
+  color: $c-gray;
 }

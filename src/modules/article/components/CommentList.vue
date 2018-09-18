@@ -20,8 +20,8 @@
         </div>
         <pre class="content comment-content" v-text="item.content"></pre>
         <div class="flex-row row-left">
-          <span class="mr-20 text-gray-hover flex-row row-left"> <icon name="thumbs-up" class="mr-4"/> 赞({{item.votes}})</span>
-          <span class="text-gray-hover flex-row row-left" @click="openReplyComment(item)"><icon name="reply" class="mr-4"></icon> 回复</span>
+          <span class="mr-20 text-gray-hover flex-row row-left"> <i class="fa fa-thumbs-up mr-4"></i> 赞({{item.votes}})</span>
+          <span class="text-gray-hover flex-row row-left" @click="openReplyComment(item)"><i class="fa fa-reply mr-4"></i> 回复</span>
         </div>
         <ul class="reply-list">
           <li v-for="reply in item.replyList">
@@ -35,7 +35,7 @@
             </div>
             <div class="flex-row row-left pt-8">
               <span class="text-gray pr-20" v-text="reply.createDate"></span>
-              <span class="text-gray-hover flex-row row-left" @click="openReplyComment(item, reply)"><icon name="reply" class="mr-4"></icon> 回复</span>
+              <span class="text-gray-hover flex-row row-left" @click="openReplyComment(item, reply)"><i class="fa fa-reply mr-4"></i> 回复</span>
             </div>
           </li>
         </ul>

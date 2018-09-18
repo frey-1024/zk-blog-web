@@ -237,7 +237,4 @@
     width: 100%;
     color: $c-white;
   }
-  .form-group{
-    margin-bottom: 20px;
-  }
 </style>

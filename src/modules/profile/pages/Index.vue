@@ -6,7 +6,7 @@
             v-for="item in menuList"
             :class="{ 'active': item.name === $route.name }"
             @click="goPage(item)">
-          <icon :name="item.icon"/>
+          <i :class="`fa fa-${item.icon}`"></i>
           <span class="pl-10" v-text="item.text"></span>
         </li>
       </ul>
@@ -24,7 +24,7 @@
         menuList: [{
           name: 'basic',
           text: '基本信息',
-          icon: 'sliders-h'
+          icon: 'sliders'
         }, {
           name: 'resetPwd',
           text: '重置密码',

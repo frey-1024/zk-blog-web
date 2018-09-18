@@ -10,19 +10,23 @@
             <a href="javascript:;" @click="goView(item)" :class="{'active': pathName === item.pathName}">{{item.text}}</a>
           </li>
         </ul>
-        <ul class="flex-row row-right nav-user" v-if="!isLogin">
-          <li><zk-button class="btn btn-default" @click="openRegister">注册</zk-button></li>
-          <li><zk-button class="btn btn-blue" @click="openLogin">登录</zk-button></li>
-        </ul>
-        <ul class="flex-row row-right nav-user" v-if="isLogin">
-          <li class="flex-row">
+        <ul class="flex-row row-right col-top nav-user">
+          <li class="form-group mb-0">
+            <div class="has-icon">
+              <input class="form-control" v-model="search" @keydown="inputSearch" type="text" placeholder="请输入搜索内容"/>
+              <i @click="searching" class="fa fa-search right-input-icon text-gray pointer"></i>
+            </div>
+          </li>
+          <li v-if="!isLogin" class="flex-row"><zk-button class="btn btn-default" @click="openRegister">注册</zk-button></li>
+          <li v-if="!isLogin" class="flex-row"><zk-button class="btn btn-blue" @click="openLogin">登录</zk-button></li>
+          <li class="flex-row" v-if="isLogin">
            <zk-button class="btn btn-blue" @click="go('edit')">新随笔</zk-button>
           </li>
-          <li class="text-gray pointer fs-20 pos-re bell flex-row">
-            <sup class="badge is-fixed">10</sup>
-            <icon name="bell" class="dis-b"/>
-          </li>
-          <li class="pointer">
+          <!--<li class="text-gray pointer fs-20 pos-re bell flex-row">-->
+            <!--<sup class="badge is-fixed">10</sup>-->
+            <!--<icon name="bell" class="dis-b"/>-->
+          <!--</li>-->
+          <li class="pointer" v-if="isLogin">
             <zk-dropdown :position="{x: 'right', y: 'bottom'}">
               <slot slot="title">
                 <img src="http://f2.topitme.com/2/6a/bc/113109954583dbc6a2o.jpg" style="width: 30px;height: 30px; border-radius: 50%;"/>
@@ -39,19 +43,19 @@
     <div class="container app-show app-nav">
       <ul class="app-header flex-row row-center">
         <li class="flex-1 flex-row row-left text-gray">
-          <icon name="search"></icon>
+          <i class="fa fa-search"></i>
         </li>
         <li class="flex-2 flex-row row-center">
           <img class="logo" src="../../../assets/logo.jpg"/>
         </li>
         <li class="flex-1 flex-row row-right text-gray">
-          <icon name="cog"></icon>
+          <i class="fa fa-cog"></i>
         </li>
       </ul>
       <ul class="nav-list flex-row row-left">
         <li v-for="item in navs" class="flex-1">
           <a href="javascript:;" @click="goView(item)" class="flex-col col-center" :class="{'active': pathName === item.pathName}">
-            <icon :name="item.appIcon"></icon>
+            <i :class="`fa fa-${item.appIcon}`"></i>
             <span v-text="item.text" class="pt-4 fs-12"></span>
           </a>
         </li>
@@ -63,19 +67,17 @@
 <script>
   import { mapState } from 'vuex';
   import { SET_STATE } from '../../core/stores/mutationTypes';
+  import { isBlank } from '../../core/utils/string';
   export default {
     data() {
       return {
+        search: '',
         navs: [{
           text: '首页',
           appIcon: 'home',
           pathName: 'home',
         }, {
-          text: '随笔',
-          appIcon: 'pen-square',
-          pathName: 'notes',
-        }, {
-          text: '问答',
+          text: '问题',
           appIcon: 'comments',
           pathName: 'comments',
         }, {
@@ -91,6 +93,7 @@
     },
     computed: {
       pathName() {
+        this.initSearchVal();
         return this.$route.name;
       },
       ...mapState('user', {
@@ -98,6 +101,30 @@
       })
     },
     methods: {
+      initSearchVal() {
+        const search = this.$route.query.s;
+        this.search = !isBlank(search) ? search : '';
+      },
+      inputSearch(ev) {
+        if (isBlank(this.search)) {
+          return;
+        }
+        const keyCode = ev.which;
+        // enter 键
+        if (keyCode === 13) {
+          this.goSearch();
+        }
+      },
+      searching() {
+        console.log('bbbb');
+        if (isBlank(this.search)) {
+          return;
+        }
+        this.goSearch();
+      },
+      goSearch() {
+        this.$router.push({ name: 'search', query: { s: this.search } });
+      },
       goView(item) {
         this.$router.push({ name: item.pathName });
       },
@@ -162,8 +189,13 @@
         & > li{
           margin-left: 25px;
         }
-        .bell:hover{
+        .bell:hover, .fa-search:hover{
           color: $c-blue;
+        }
+        .form-control{
+          &:focus{
+            transform: scale(1.2, 1) translateX(-18px);
+          }
         }
       }
     }

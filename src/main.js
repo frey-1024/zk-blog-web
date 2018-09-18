@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import App from './App.vue';
-import 'vue-awesome/icons';
+// import 'vue-awesome/icons';
 import store from './modules/core/stores/index';
 import router from './modules/core/routers/index';
 import { addGlobalComponents } from './modules/core/components/index';

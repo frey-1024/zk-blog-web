@@ -3,7 +3,7 @@
   <div class="zk-btn" :class="{'disabled': loading}">
     <canvas class="zk-ripple" @click="ripple"></canvas>
     <slot></slot>
-    <icon name="spinner" pulse v-if="loading" class="pull-right ml-4"></icon>
+    <i class="fa fa-spinner fa-spin pull-right ml-4" v-if="loading"></i>
   </div>
 </template>
 
