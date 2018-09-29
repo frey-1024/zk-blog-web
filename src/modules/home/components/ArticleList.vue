@@ -18,6 +18,10 @@
         </li>
       </ul>
     </li>
+    <li class="empty" key="empty" v-if="!dataList || !dataList.length">
+      <img src="../imgs/null-page-draw.png" alt="没有搜索到内容"/>
+      <p class="text-center text-gray fs-16 pt-30">没有搜索到内容</p>
+    </li>
   </transition-group>
 </template>
 
@@ -61,6 +65,16 @@
       }
       &:last-child{
         border-bottom: none;
+      }
+    }
+    & > li.empty{
+      border: none;
+      max-width: 450px;
+      width: 100%;
+      margin: auto;
+      padding-top: 60px;
+      img{
+        width: 100%;
       }
     }
   }
