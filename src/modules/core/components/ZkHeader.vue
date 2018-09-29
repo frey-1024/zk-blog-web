@@ -14,7 +14,7 @@
           <li class="form-group mb-0">
             <div class="has-icon">
               <input class="form-control" v-model="search" @keydown="inputSearch" type="text" placeholder="请输入搜索内容"/>
-              <i @click="searching" class="fa fa-search right-input-icon text-gray pointer"></i>
+              <i @click="goSearch" class="fa fa-search right-input-icon text-gray pointer"></i>
             </div>
           </li>
           <li v-if="!isLogin" class="flex-row"><zk-button class="btn btn-default" @click="openRegister">注册</zk-button></li>
@@ -22,10 +22,6 @@
           <li class="flex-row" v-if="isLogin">
            <zk-button class="btn btn-blue" @click="go('edit')">新随笔</zk-button>
           </li>
-          <!--<li class="text-gray pointer fs-20 pos-re bell flex-row">-->
-            <!--<sup class="badge is-fixed">10</sup>-->
-            <!--<icon name="bell" class="dis-b"/>-->
-          <!--</li>-->
           <li class="pointer" v-if="isLogin">
             <zk-dropdown :position="{x: 'right', y: 'bottom'}">
               <slot slot="title">
@@ -72,6 +68,7 @@
     data() {
       return {
         search: '',
+        prevSearch: '',
         navs: [{
           text: '首页',
           appIcon: 'home',
@@ -103,26 +100,34 @@
     methods: {
       initSearchVal() {
         const search = this.$route.query.s;
-        this.search = !isBlank(search) ? search : '';
+        const val = !isBlank(search) ? search : '';
+        // 不能直接复制，因为这样会导致computed重复执行。
+        this.prevSearch = val;
+        this.search = val;
       },
       inputSearch(ev) {
-        if (isBlank(this.search)) {
-          return;
-        }
         const keyCode = ev.which;
         // enter 键
         if (keyCode === 13) {
           this.goSearch();
         }
       },
-      searching() {
-        console.log('bbbb');
+      goSearch() {
+        // 没有搜索内容，将返回home页面
         if (isBlank(this.search)) {
+          this.$router.push({name: 'home'});
           return;
         }
-        this.goSearch();
-      },
-      goSearch() {
+        // 阻止重复搜索
+        if (this.search === this.prevSearch) {
+          return;
+        }
+        this.prevSearch = this.search;
+        if (this.pathName === 'search') {
+          this.$store.dispatch('search/refreshSearch', {
+            search: this.search
+          });
+        }
         this.$router.push({ name: 'search', query: { s: this.search } });
       },
       goView(item) {

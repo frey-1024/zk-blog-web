@@ -1,9 +1,9 @@
 <template>
   <div class="container pt-30 home-wrapper" v-loading.before="loading">
-    <article-list :data-list="dataList.rows"></article-list>
+    <article-list :data-list="searchData.rows" :search="search"></article-list>
     <pagination
-      v-if="dataList.total && dataList.total > pageSize"
-      :total="dataList.total"
+      v-if="searchData.total && searchData.total > pageSize"
+      :total="searchData.total"
       :current-page.sync="currentPage"
       prev-text="上一页"
       next-text="下一页"
@@ -14,17 +14,22 @@
 </template>
 
 <script>
-  import { articleList } from '../services/apiService';
+  import { mapState } from 'vuex';
   export default {
     data() {
       return {
         pageSize: 5,
         currentPage: 1,
-        dataList: {
-          rows: [],
-        },
-        loading: false,
       };
+    },
+    computed: {
+      search() {
+        return this.$route.query.s;
+      },
+      ...mapState('search', {
+        searchData: state => state.searchData,
+        loading: state => state.loading,
+      })
     },
     mounted() {
       this.getArticleList();
@@ -33,13 +38,12 @@
       currentPageChange() {
         this.getArticleList();
       },
-      async getArticleList() {
-        this.loading = true;
-        this.dataList = await articleList.postAwait({
+      getArticleList() {
+        this.$store.dispatch('search/refreshSearch', {
+          search: this.search,
           currentPage: this.currentPage,
           pageSize: this.pageSize
         });
-        this.loading = false;
       }
     },
     components: {

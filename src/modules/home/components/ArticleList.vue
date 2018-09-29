@@ -1,11 +1,11 @@
 <template>
-  <ul class="news-list">
+  <transition-group tag="ul" name="list" class="news-list" mode="out-in">
     <li v-for="item in dataList" :key="item.id">
-      <h3 v-text="item.title" class="news-item-title pb-15"></h3>
+      <h3 v-html="item.title" @click="goArticleView(item.id)" class="news-item-title pb-15"></h3>
       <p class="article-excerpt" v-text="item.excerpt"></p>
-      <ul class="flex-row row-left text-gray mt-10">
+      <ul class="operations flex-row row-left text-gray mt-10">
         <li class="flex-row row-left mr-15">
-          <i class="mr-4 fa fa-thumbs-up"></i>
+          <i class="fa fa-thumbs-up mr-4"></i>
           赞（<span v-text="item.votes"></span>）
         </li>
         <li class="flex-row row-left mr-15">
@@ -18,7 +18,7 @@
         </li>
       </ul>
     </li>
-  </ul>
+  </transition-group>
 </template>
 
 <script>
@@ -28,24 +28,34 @@
       dataList: {
         type: Array,
         default: []
+      },
+      search: {
+        type: String,
       }
     },
     data() {
-      return {
-      };
+      return {};
+    },
+    computed: {
     },
     mounted() {
-      console.log(this.dataList);
     },
+    methods: {
+      goArticleView(id) {
+        this.$router.push({ name: 'view', params: { id } });
+      },
+    }
   };
 </script>
 
 <style lang="scss" scoped>
   @import "../../core/styles/color";
   .news-list{
+    min-height: 600px;
     & > li {
       border-bottom: 1px solid $c-light-border;
       padding: 15px 0;
+      transition: all 0.5s linear;
       &:first-child{
         padding-top: 0;
       }
@@ -59,6 +69,7 @@
     color: $c-black;
     font-weight: normal;
     cursor: pointer;
+    display: inline-block;
     &:hover{
       color: $c-green;
     }
@@ -72,5 +83,14 @@
     line-height: 1.5;
     color: $c-gray;
     font-size: 14px;
+  }
+
+  /*动画过渡*/
+  .list-enter, .list-leave-active {
+    opacity: 0;
+    transform: translateY(-300px);
+  }
+  .list-leave-active {
+    position: absolute;
   }
 </style>
