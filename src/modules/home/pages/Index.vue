@@ -1,6 +1,6 @@
 <template>
   <div class="container pt-30 home-wrapper" v-loading.before="loading">
-    <article-list :data-list="dataList.rows" :loading="loading"></article-list>
+    <article-list :data-list="dataList.rows" v-if="dataList.rows"></article-list>
     <pagination
       v-if="dataList.total && dataList.total > pageSize"
       :total="dataList.total"
@@ -20,9 +20,7 @@
       return {
         pageSize: 5,
         currentPage: 1,
-        dataList: {
-          rows: [],
-        },
+        dataList: {},
         loading: false,
       };
     },

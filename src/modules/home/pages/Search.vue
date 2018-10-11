@@ -1,6 +1,6 @@
 <template>
   <div class="container pt-30 home-wrapper" v-loading.before="loading">
-    <article-list :data-list="searchData.rows" :search="search" :loading="loading"></article-list>
+    <article-list :data-list="searchData.rows" :search="search" v-if="searchData.rows"></article-list>
     <pagination
       v-if="searchData.total && searchData.total > pageSize"
       :total="searchData.total"

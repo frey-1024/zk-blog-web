@@ -5,9 +5,7 @@ export default {
   namespaced: true,
   state: {
     loading: false,
-    searchData: {
-      rows: [],
-    },
+    searchData: {},
   },
   mutations,
   actions,
