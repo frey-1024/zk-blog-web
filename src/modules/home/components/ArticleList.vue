@@ -18,7 +18,7 @@
         </li>
       </ul>
     </li>
-    <li class="empty" key="empty" v-if="!dataList || !dataList.length">
+    <li class="empty" key="empty" v-if="!loading && (!dataList || !dataList.length)">
       <img src="../imgs/null-page-draw.png" alt="没有搜索到内容"/>
       <p class="text-center text-gray fs-16 pt-30">没有搜索到内容</p>
     </li>
@@ -35,6 +35,10 @@
       },
       search: {
         type: String,
+      },
+      loading: {
+        type: Boolean,
+        default: false,
       }
     },
     data() {

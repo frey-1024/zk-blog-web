@@ -83,7 +83,7 @@
           name,
           password: md5(pwd)
         });
-        if (data) {
+        if (data !== 'e') {
           this.$zkMessage.success('登录成功。');
           this.resolve(data);
           this.close();
