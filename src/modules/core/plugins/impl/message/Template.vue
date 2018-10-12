@@ -68,7 +68,8 @@
   @import "../../../styles/color";
   .zk-message-wrapper{
     position: fixed;
-    min-width: 380px;
+    min-width: 350px;
+    max-width: 90%;
     left: 50%;
     top: 10%;
     transform: translateX(-50%);

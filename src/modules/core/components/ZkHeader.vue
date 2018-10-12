@@ -48,14 +48,6 @@
           <i class="fa fa-cog"></i>
         </li>
       </ul>
-      <ul class="nav-list flex-row row-left">
-        <li v-for="item in navs" class="flex-1">
-          <a href="javascript:;" @click="goView(item)" class="flex-col col-center" :class="{'active': pathName === item.pathName}">
-            <i :class="`fa fa-${item.appIcon}`"></i>
-            <span v-text="item.text" class="pt-4 fs-12"></span>
-          </a>
-        </li>
-      </ul>
     </div>
   </header>
 </template>
@@ -64,28 +56,13 @@
   import { mapState } from 'vuex';
   import { SET_STATE } from '../../core/stores/mutationTypes';
   import { isBlank } from '../../core/utils/string';
+  import navs from '../resources/navs';
   export default {
     data() {
       return {
         search: '',
         prevSearch: '',
-        navs: [{
-          text: '首页',
-          appIcon: 'home',
-          pathName: 'home',
-        }, {
-          text: '问题',
-          appIcon: 'comments',
-          pathName: 'comments',
-        }, {
-          text: '学习',
-          appIcon: 'battery-three-quarters',
-          pathName: 'charge',
-        }, {
-          text: '关于',
-          appIcon: 'user',
-          pathName: 'user',
-        }]
+        navs
       };
     },
     computed: {
@@ -210,24 +187,6 @@
       padding: 10px 15px;
       .logo{
         height: 23px;
-      }
-    }
-    & > .nav-list{
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: auto;
-      padding: 4px 10px;
-      background-color: $c-white;
-      box-shadow: 0 -1px rgba($c-black,.1), 0 -2px 10px rgba($c-black,.1);
-      & > li{
-        & > a{
-          color: $c-gray;
-          &.active{
-            color: $c-green;
-          }
-        }
       }
     }
   }

@@ -20,7 +20,7 @@
     </transition>
     <div class="flex-1 article-detail" ref="contentWrapper">
       <h1 class="article-title fs-30" v-text="article.title"></h1>
-      <ul class="flex-row row-left text-gray mt-10 fs-14">
+      <ul class="flex-row row-left text-gray flex-wrap mt-10 fs-14">
         <li class="flex-row row-left mr-15">
           <i class="fa fa-eye mr-4"></i>
           阅读（<span v-text="article.previewCount"></span>）
@@ -271,6 +271,7 @@
     position: relative;
     z-index: 2;
     background-color: $c-white;
+    max-width: 100%;
   }
   .edit{
     color: $c-green;

@@ -3,16 +3,16 @@
     <li v-for="item in dataList" :key="item.id">
       <h3 v-html="item.title" @click="goArticleView(item.id)" class="news-item-title pb-15"></h3>
       <p class="article-excerpt" v-text="item.excerpt"></p>
-      <ul class="operations flex-row row-left text-gray mt-10">
-        <li class="flex-row row-left mr-15">
+      <ul class="operations flex-row row-left text-gray flex-wrap">
+        <li class="flex-row row-left mr-15 mt-10">
           <i class="fa fa-thumbs-up mr-4"></i>
           赞（<span v-text="item.votes"></span>）
         </li>
-        <li class="flex-row row-left mr-15">
+        <li class="flex-row row-left mr-15 mt-10">
           <i class="fa fa-eye mr-4"></i>
           阅读（<span v-text="item.previewCount"></span>）
         </li>
-        <li class="flex-row row-left mr-15">
+        <li class="flex-row row-left mr-15 mt-10">
           <i class="fa fa-calendar mr-4"></i>
           发布于（<span v-text="item.updateDate"></span>）
         </li>

@@ -1,7 +1,13 @@
 <template>
   <div id="app" class="flex-col row-between">
     <zk-header></zk-header>
-    <router-view class="flex-1"/>
+    <div class="flex-1 app-content">
+      <router-view />
+      <div class="blog-footer-info text-center">
+        <div class="pb-4">技术博客 <a href="https://github.com/zhangKunUserGit" target="_blank">GitHub</a></div>
+        <p>邮箱: 1766597067@qq.com</p>
+      </div>
+    </div>
     <zk-footer></zk-footer>
   </div>
 </template>
@@ -25,6 +31,12 @@ export default {
 <style lang="scss">
 @import "./modules/core/styles/basic.scss";
   #app{
-    min-height: 100%;
+    height: 100%;
   }
+.blog-footer-info{
+  border-top: 1px solid $c-light-border;
+  color: $c-gray;
+  margin-top: 30px;
+  padding-top: 10px;
+}
 </style>
