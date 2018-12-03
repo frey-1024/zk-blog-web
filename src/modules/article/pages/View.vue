@@ -34,7 +34,15 @@
         </li>
       </ul>
       <p class="fs-14 pt-30" v-text="article.excerpt"></p>
-      <div class="pt-15 markdown-body" v-html="article.html" v-loading="loading" ref="content"></div>
+      <!--<div class="pt-15 markdown-body" v-html="article.html" v-loading="loading" ref="content"></div>-->
+      <markdown-run
+        v-loading="loading"
+        class="pt-15 markdown-body"
+        ref="content"
+        :mark="markdownTxt"
+        highlight-style-file-name="github"
+      />
+      <!--<markdown-run :mark="article1.markdown" v-if="article1.markdown"></markdown-run>-->
       <div class="flex-row row-center pt-20 pb-20">
         <zk-button class="btn btn-green btn-md flex-row row-center" :loading="saving" @click="saveVotes">
           <i class="fa fa-thumbs-up mr-4"></i> 点赞 | <span v-text="article.votes"></span>
@@ -55,15 +63,19 @@
   import Resize from '../../core/utils/Resize';
   import { articleById, votes } from '../services/apiService';
   import { mapState } from 'vuex';
-  import 'highlight.js/styles/github.css';
   export default {
     data() {
       return {
+        markdownTxt: '',
         loading: false,
         saving: false,
         articleId: this.$route.params.id,
         article: {
           votes: 0,
+          markdown: ''
+        },
+        article1: {
+          markdown: ''
         },
         navigation: [],
         showNavigation: false,
@@ -91,6 +103,8 @@
         }
         this.loading = true;
         this.article = await articleById.getAwait({id: this.articleId, type: 'content'});
+        const article1 = await articleById.getAwait({id: this.articleId, type: 'detail'});
+        this.markdownTxt = article1.markdown;
         this.loading = false;
         // 获取文章导航列表
         this.getArticleNavigation();
@@ -186,7 +200,7 @@
         this.$nextTick(() => {
           // 添加监听内容容器大小变化
           this.addResizeListener();
-          const contentEl = this.$refs.content;
+          const contentEl = this.$refs.content.$el;
           let nodes = contentEl.children;
           if (!nodes || !nodes.length) {
             return;
@@ -194,14 +208,23 @@
           let reg = /^H[1-6]{1}$/;
           let id;
           Array.from(nodes).forEach((node) => {
-            if (reg.test(node.tagName)) {
-              id = node.children[0].getAttribute('id');
-              this.navigation.push({
-                tagName: node.tagName,
-                id,
-                content: node.childNodes[1].nodeValue,
-                point: getElementPointWithId(id),
-                active: false,
+            const commonEl = node.className === 'markdown-common' ? node : '';
+            if (commonEl) {
+              let commonChildren = commonEl.children;
+              if (!commonChildren || !commonChildren.length) {
+                return;
+              }
+              Array.from(commonChildren).forEach((item) => {
+                if (reg.test(item.tagName)) {
+                  id = item.getAttribute('id');
+                  this.navigation.push({
+                    tagName: item.tagName,
+                    id,
+                    content: item.innerHTML,
+                    point: getElementPointWithId(id),
+                    active: false,
+                  });
+                }
               });
             }
           });
