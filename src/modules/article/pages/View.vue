@@ -41,6 +41,7 @@
         ref="content"
         :mark="markdownTxt"
         highlight-style-file-name="github"
+        @error="errorFn"
       />
       <!--<markdown-run :mark="article1.markdown" v-if="article1.markdown"></markdown-run>-->
       <div class="flex-row row-center pt-20 pb-20">
@@ -58,6 +59,7 @@
 </template>
 
 <script>
+  import { MarkdownRun } from 'vue-markdown-run';
   import { getElementPointWithId, getStyle } from '../../core/utils/get';
   import { isBlank } from '../../core/utils/string';
   import Resize from '../../core/utils/Resize';
@@ -92,6 +94,9 @@
       this.getArticle();
     },
     methods: {
+      errorFn(err) {
+        console.log(err);
+      },
       /**
        * 获取文章内容
        */
@@ -281,6 +286,7 @@
       }
     },
     components: {
+      MarkdownRun,
       CommentList: () => import('../components/CommentList.vue'),
       ToolBox: () => import('../components/ToolBox.vue'),
     }

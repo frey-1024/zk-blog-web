@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import MarkdownRun from 'vue-markdown-run';
+// import MarkdownRun from 'vue-markdown-run';
 
 import App from './App.vue';
 // import 'vue-awesome/icons';
@@ -14,7 +14,7 @@ Vue.config.productionTip = false;
 addGlobalComponents(Vue);
 addGlobalPlugins(Vue);
 addGlobalDirectives(Vue);
-Vue.use(MarkdownRun);
+// Vue.use(MarkdownRun);
 // let query = false;
 // router.beforeEach((to, from, next) => {
 //   if (!query || to.path !== '/') {
